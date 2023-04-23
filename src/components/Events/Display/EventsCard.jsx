@@ -77,7 +77,7 @@ const EventsCard = ({ organisationName, eventName, description, addressLine1, ad
                             </div>
                         </div>
                     </div>
-                    <Link href={eventURL} target="_blank" rel="noopener noreferrer" className="hover:underline hover:underline-offset-2 md:hover:underline-offset-4 hover:decoration-2 hover:decoration-indigo-400">
+                    <Link href={eventURL} target="_blank" rel="noopener noreferrer" className="hover:underline hover:underline-offset-2 md:hover:underline-offset-4 hover:decoration-indigo-400">
                         <p className="text-center text-slate-900 py-2 md:py-4 break-all">{eventURL}</p>
                     </Link>
                 </div>

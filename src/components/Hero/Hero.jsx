@@ -20,10 +20,9 @@ const Hero = ({ events, selectedCity, setSelectedCity }) => {
     }
 
     return (
-        <div className="max-w-7xl mx-auto py-14 px-8 md:py-20 md:px-12">
-            <div className="w-4/5 md:p-4 text-3xl md:text-5xl lg:text-5xl text-indigo-400 font-semibold tracking-wide md:text-justify">
-                <h1 className="leading-normal">Upcoming Queer East and</h1>
-                <h1 className="leading-normal pt-2 pb-1 md:py-2">Southeast Asian Events In:</h1>
+        <div className="max-w-7xl mx-auto py-14 px-8 md:py-20 md:pl-14 lg:pt-20 lg:pb-32 lg:px-10 flex flex-row justify-between items-start lg:items-center xl:items-end">
+            <div className="w-5/6 lg:w-11/12 mx-auto md:p-4 text-3xl lg:text-5xl text-black font-semibold tracking-wide md:text-justify">
+                <h1 className="leading-normal lg:tracking-wider lg:pr-10">Upcoming Queer East and Southeast Asian Events In:</h1>
                 {dropdown ? (
                     <>
                         <div className="relative max-w-max">
@@ -50,6 +49,9 @@ const Hero = ({ events, selectedCity, setSelectedCity }) => {
                         <BsCaretDownFill className="mt-2" />
                     </div>
                 )}
+            </div>
+            <div className="hidden md:block">
+                <img src="/pride.svg" className="w-1/2 lg:w-2/3 mx-auto" />
             </div>
         </div>
     )

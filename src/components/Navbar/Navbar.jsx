@@ -51,28 +51,32 @@ const Navbar = () => {
                                     </div>
                                 </>
                             ) : (
-                                <div className="bg-white rounded-full p-3 cursor-pointer hover:bg-indigo-400 hover:text-white">
-                                    <MdAdd
-                                        className="text-xl"
-                                        onClick={handleAddEvent}
-                                    />
+                                <div className="bg-white rounded-full p-3 cursor-pointer hover:bg-indigo-400 hover:text-white"
+                                    onClick={handleAddEvent}
+                                >
+                                    <MdAdd className="text-xl" />
                                 </div>
                             )}
 
                             {menuOpen ? (
-                                <FiX className="text-2xl cursor-pointer" onClick={() => setMenuOpen(false)} />
+                                <FiX className="text-2xl cursor-pointer hover:text-violet-600" onClick={() => setMenuOpen(false)} />
                             ) : (
-                                <FiMenu className="text-2xl cursor-pointer" onClick={() => setMenuOpen(true)} />
+                                <FiMenu className="text-2xl cursor-pointer hover:text-violet-600" onClick={() => setMenuOpen(true)} />
                             )}
                         </div>
 
-                        {menuOpen && userStateValue.name &&
-                            <ul className="absolute top-10 right-0 flex flex-col gap-2 bg-white rounded-xl">
-                                <li className="border rounded-lg py-3 w-32 text-center font-medium text-lg hover:opacity-80 cursor-pointer"
-                                    onClick={handleLogOut}
-                                >
-                                    Log Out
+                        {menuOpen &&
+                            <ul className="w-32 md:w-48 lg:w-72 absolute top-10 md:top-12 right-0 flex flex-col bg-white border border-gray-700 rounded-xl">
+                                <li className="border-b py-5 text-center font-medium text-lg hover:opacity-50 cursor-pointer">
+                                    See all queer organisations
                                 </li>
+                                {userStateValue.name &&
+                                    <li className="py-5 text-center font-medium text-lg hover:opacity-50 cursor-pointer"
+                                        onClick={handleLogOut}
+                                    >
+                                        Log Out
+                                    </li>
+                                }
                             </ul>
                         }
                     </div>
