@@ -11,7 +11,8 @@ const Hero = ({ events, selectedCity, setSelectedCity }) => {
     }
 
     events.forEach(item => {
-        if (!location.includes(item.location.city.trim())) location.push(capitalise(item.location.city));
+        if (item.location.city !== "" && !location.includes(item.location.city.trim())) location.push(capitalise(item.location.city));
+        if (item.format === "Online" && !location.includes("Online")) location.push(item.format);
     })
 
     const handleCitySelection = (item) => {
@@ -30,7 +31,7 @@ const Hero = ({ events, selectedCity, setSelectedCity }) => {
                                 <h1>Select Location</h1>
                                 <BsCaretUp className="mt-2" />
                             </div>
-                            <div className="absolute z-10 top-14 w-full md:top-20 bg-white rounded-xl py-4 mt-1 text-violet-400">
+                            <div className="absolute z-10 top-18 w-full md:top-20 bg-white rounded-xl py-4 mt-1 text-violet-400">
                                 {location.map(item =>
                                     <p
                                         key={item}

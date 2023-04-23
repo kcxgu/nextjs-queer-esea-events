@@ -1,6 +1,5 @@
 import connectdb from "@/utils/connectdb";
 import EventsModel from "@/models/eventsSchema";
-import { ObjectId } from "mongoose";
 
 export default async function handler(req, res) {
     switch (req.method) {

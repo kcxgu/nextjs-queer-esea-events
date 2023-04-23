@@ -25,16 +25,26 @@ export default function Home() {
 
   const getEventsByCity = () => {
     events.forEach(item => {
-      if (selectedCity === item.location.city && selectedEvents.filter(event => event._id === item._id).length === 0) selectedEvents.push(item);
+      if (selectedCity.toLocaleLowerCase() === item.location.city.toLocaleLowerCase() && selectedEvents.filter(event => event._id === item._id).length === 0) selectedEvents.push(item);
+      if (selectedCity === item.format && selectedEvents.filter(event => event._id === item._id).length === 0) selectedEvents.push(item);
     })
   }
 
   events.forEach(item => {
-    if ((selectedMonth === "Month" || selectedMonth === "Any") && selectedCity === item.location.city && selectedEvents.filter(event => event._id === item._ed).length === 0) selectedEvents.push(item);
+    if ((selectedMonth === "Month" || selectedMonth === "Any")) {
+      if (selectedCity.toLocaleLowerCase() === item.location.city.toLocaleLowerCase() && selectedEvents.filter(event => event._id === item._ed).length === 0) selectedEvents.push(item);
+      if (selectedCity === item.format && selectedEvents.filter(event => event._id === item._id).length === 0) selectedEvents.push(item);
+    }
+    // if ((selectedMonth === "Month" || selectedMonth === "Any") && selectedCity === item.location.city && selectedEvents.filter(event => event._id === item._ed).length === 0) selectedEvents.push(item);
   })
 
   events.forEach(item => {
-    if (getMonth(item.eventDate) === selectedMonth && selectedCity === item.location.city && selectedEvents.filter(event => event._id === item._id).length === 0) selectedEvents.push(item);
+    if (getMonth(item.eventDate) === selectedMonth) {
+      if (selectedCity.toLocaleLowerCase() === item.location.city.toLocaleLowerCase() && selectedEvents.filter(event => event._id === item._id).length === 0) selectedEvents.push(item)
+      if (selectedCity === item.format && selectedEvents.filter(event => event._id === item._id).length === 0) selectedEvents.push(item);
+    }
+
+    // if (getMonth(item.eventDate) === selectedMonth && selectedCity === item.location.city && selectedEvents.filter(event => event._id === item._id).length === 0) selectedEvents.push(item);
   })
 
   useEffect(() => {

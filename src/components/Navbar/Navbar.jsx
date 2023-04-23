@@ -68,6 +68,9 @@ const Navbar = () => {
                         {menuOpen &&
                             <ul className="w-32 md:w-48 lg:w-72 absolute top-10 md:top-12 right-0 flex flex-col bg-white border border-gray-700 rounded-xl">
                                 <li className="border-b py-5 text-center font-medium text-lg hover:opacity-50 cursor-pointer">
+                                    <Link href="/add-event" onClick={() => setMenuOpen(false)}>Add event</Link>
+                                </li>
+                                <li className="border-b py-5 text-center font-medium text-lg hover:opacity-50 cursor-pointer">
                                     See all queer organisations
                                 </li>
                                 {userStateValue.name &&

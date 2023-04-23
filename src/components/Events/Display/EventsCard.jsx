@@ -2,7 +2,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { AiOutlineDown, AiOutlineUp } from "react-icons/ai"
 
-const EventsCard = ({ organisationName, eventName, description, addressLine1, addressLine2, city, postcode, eventDate, startTime, endTime, price, eventURL }) => {
+const EventsCard = ({ organisationName, eventName, description, format, addressLine1, addressLine2, city, postcode, eventDate, startTime, endTime, price, eventURL }) => {
 
     const [openModal, setOpenModal] = useState(false);
 
@@ -64,12 +64,21 @@ const EventsCard = ({ organisationName, eventName, description, addressLine1, ad
                         }
 
                         <div className="flex flex-col md:flex-row items-start justify-between">
-                            <div className="text-gray-500 pb-2 md:pb-4">
-                                <p>{titleCap(addressLine1)}</p>
-                                {addressLine2 && <p>{titleCap(addressLine2)}</p>}
-                                <p>{capitalise(city)}</p>
-                                <p>{titleCap(postcode)}</p>
-                            </div>
+                            {format === "In Person" &&
+                                <div className="text-gray-500 pb-2 md:pb-4">
+                                    <p>{titleCap(addressLine1)}</p>
+                                    {addressLine2 && <p>{titleCap(addressLine2)}</p>}
+                                    <p>{capitalise(city)}</p>
+                                    <p>{titleCap(postcode)}</p>
+                                </div>
+                            }
+
+                            {format === "Online" &&
+                                <div className="text-gray-500 pb-2 md:pb-4">
+                                    <p>{format}</p>
+                                </div>
+                            }
+
                             <div className="flex flex-col gap-1 md:text-xl">
                                 <p>{startTime}-{endTime}</p>
                                 <p>{date}</p>

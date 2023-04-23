@@ -9,9 +9,9 @@ const EventsSchedule = ({ events, selectedMonth, setSelectedMonth }) => {
     const months = ["Any", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
     const selectedMonthNumber = months.indexOf(selectedMonth);
 
-    const eventsThisMonth = [];
-    const futureEvents = [];
-    const selectedMonthEvents = [];
+    let eventsThisMonth = [];
+    let futureEvents = [];
+    let selectedMonthEvents = [];
 
     const handleDelete = async (item) => {
         await axios.post("/api/events/deleteEvent", item)
@@ -47,6 +47,18 @@ const EventsSchedule = ({ events, selectedMonth, setSelectedMonth }) => {
         setSelectedMonth(item);
         setDropdown(false);
     }
+
+    eventsThisMonth.sort(function (a, b) {
+        return a.startTime.localeCompare(b.startTime);
+    });
+
+    futureEvents.sort(function (a, b) {
+        return a.startTime.localeCompare(b.startTime);
+    });
+
+    selectedMonthEvents.sort(function (a, b) {
+        return a.startTime.localeCompare(b.startTime);
+    });
 
     return (
         <div className="max-w-7xl mx-auto py-8 md:py-0">
@@ -96,6 +108,7 @@ const EventsSchedule = ({ events, selectedMonth, setSelectedMonth }) => {
                                     organisationName={item.organisationName}
                                     eventName={item.eventName}
                                     description={item.description}
+                                    format={item.format}
                                     addressLine1={item.location.addressLine1}
                                     addressLine2={item.location.addressLine2}
                                     city={item.location.city}
@@ -126,6 +139,7 @@ const EventsSchedule = ({ events, selectedMonth, setSelectedMonth }) => {
                                         organisationName={item.organisationName}
                                         eventName={item.eventName}
                                         description={item.description}
+                                        format={item.format}
                                         addressLine1={item.location.addressLine1}
                                         addressLine2={item.location.addressLine2}
                                         city={item.location.city}
@@ -153,6 +167,7 @@ const EventsSchedule = ({ events, selectedMonth, setSelectedMonth }) => {
                                         organisationName={item.organisationName}
                                         eventName={item.eventName}
                                         description={item.description}
+                                        format={item.format}
                                         addressLine1={item.location.addressLine1}
                                         addressLine2={item.location.addressLine2}
                                         city={item.location.city}

@@ -4,14 +4,17 @@ const eventsSchema = new Schema({
     organisationName: {
         type: String,
         required: true,
+        trim: true,
     },
     eventName: {
         type: String,
         required: true,
+        trim: true,
     },
     description: {
         type: String,
         required: true,
+        trim: true,
     },
     eventDate: {
         type: String,
@@ -25,26 +28,33 @@ const eventsSchema = new Schema({
         type: String,
         required: true,
     },
+    format: {
+        type: String,
+        required: true,
+        trim: true,
+    },
     location: {
         addressLine1: {
             type: String,
-            required: true,
+            trim: true,
         },
         addressLine2: {
             type: String,
+            trim: true,
         },
         city: {
             type: String,
-            required: true,
+            trim: true,
         },
         postcode: {
             type: String,
-            required: true,
+            trim: true,
         },
     },
     eventURL: {
         type: String,
         required: true,
+        trim: true,
     },
     price: {
         type: Number,

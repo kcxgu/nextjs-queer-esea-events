@@ -20,6 +20,7 @@ export default async function login(req, res) {
                     return res.send({ user })
                 }
             })
+            res.status(201)
         } else {
             return res.send({ message: "Incorrect email or password" })
         }
