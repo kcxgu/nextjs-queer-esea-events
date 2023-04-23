@@ -119,7 +119,7 @@ const AuthModal = () => {
                     process.env.NEXT_PUBLIC_EMAIL_TEMPLATE_ID,
                     {
                         user_email: email,
-                        message: `Click here to reset your password: www.example.com/${res.data.id}`
+                        message: `Click here to reset your password: www.example.com/reset-password/${res.data.id}`
                     },
                     process.env.NEXT_PUBLIC_EMAIL_PUBLIC_KEY
                 ).then(res => {
