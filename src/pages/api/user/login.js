@@ -10,8 +10,16 @@ export default async function login(req, res) {
         const { email, password } = req.body;
 
         const user = await UserModel.findOne({ email })
-        if (user && password === user.password) {
-            return res.send({ user })
+        if (user) {
+            user.comparePassword(password, function (matchError, isMatch) {
+                if (matchError) {
+                    return res.send({ message: "Incorrect email or password" })
+                } else if (!isMatch) {
+                    return res.send({ message: "Incorrect email or password" })
+                } else {
+                    return res.send({ user })
+                }
+            })
         } else {
             return res.send({ message: "Incorrect email or password" })
         }
