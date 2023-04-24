@@ -105,6 +105,7 @@ const EventsSchedule = ({ events, selectedMonth, setSelectedMonth }) => {
                             {eventsThisMonth.map(item =>
                                 <EventsCard
                                     key={item._id}
+                                    id={item._id}
                                     organisationName={item.organisationName}
                                     eventName={item.eventName}
                                     description={item.description}
@@ -136,6 +137,7 @@ const EventsSchedule = ({ events, selectedMonth, setSelectedMonth }) => {
                                 {futureEvents.map(item =>
                                     <EventsCard
                                         key={item._id}
+                                        id={item._id}
                                         organisationName={item.organisationName}
                                         eventName={item.eventName}
                                         description={item.description}
@@ -164,6 +166,7 @@ const EventsSchedule = ({ events, selectedMonth, setSelectedMonth }) => {
                                 {selectedMonthEvents.map(item =>
                                     <EventsCard
                                         key={item._id}
+                                        id={item._id}
                                         organisationName={item.organisationName}
                                         eventName={item.eventName}
                                         description={item.description}

@@ -1,8 +1,9 @@
 import { useState } from "react";
-import Link from "next/link";
 import { AiOutlineDown, AiOutlineUp } from "react-icons/ai"
+import Link from "next/link";
+import ReportModal from "@/components/Modals/ReportModal";
 
-const EventsCard = ({ organisationName, eventName, description, format, addressLine1, addressLine2, city, postcode, eventDate, startTime, endTime, price, eventURL }) => {
+const EventsCard = ({ id, organisationName, eventName, description, format, addressLine1, addressLine2, city, postcode, eventDate, startTime, endTime, price, eventURL }) => {
 
     const [openModal, setOpenModal] = useState(false);
 
@@ -89,6 +90,13 @@ const EventsCard = ({ organisationName, eventName, description, format, addressL
                     <Link href={eventURL} target="_blank" rel="noopener noreferrer" className="hover:underline hover:underline-offset-2 md:hover:underline-offset-4 hover:decoration-indigo-400">
                         <p className="text-center text-slate-900 py-2 md:py-4 break-all">{eventURL}</p>
                     </Link>
+                    <ReportModal
+                        id={id}
+                        organisationName={organisationName}
+                        eventName={eventName}
+                        description={eventName}
+                        eventURL={eventURL}
+                    />
                 </div>
             </div>
         </div>

@@ -1,19 +1,20 @@
 import { MdAdd } from "react-icons/md";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { authModalState } from "../../atoms/authModal";
+import { menuModalState } from "../../atoms/menuModal";
 import { userState } from "../../atoms/userAtom";
 import { FaUserCircle } from "react-icons/fa";
 import { FiX, FiMenu } from "react-icons/fi";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import AuthModal from "../Modals/AuthModal";
-import { useState } from "react";
+import MenuModal from "../Modals/MenuModal";
 
 const Navbar = () => {
     const router = useRouter();
     const setAuthModalState = useSetRecoilState(authModalState);
+    const [menuModal, setMenuModal] = useRecoilState(menuModalState);
     const [userStateValue, setUserStateValue] = useRecoilState(userState);
-    const [menuOpen, setMenuOpen] = useState(false);
 
     const handleAddEvent = () => {
         if (!userStateValue.name) {
@@ -23,6 +24,7 @@ const Navbar = () => {
         } else {
             router.push("/add-event")
         }
+        setMenuModal({ open: false })
     }
 
     const handleLogIn = () => {
@@ -30,20 +32,15 @@ const Navbar = () => {
             setAuthModalState({
                 open: true,
             });
+            setMenuModal({ open: false })
         }
     }
 
-    const handleSignUp = () => {
-        router.push("/signup")
+    const handleOpenMenuModal = () => {
+        setMenuModal({ open: true })
     }
-
-    const handleLogOut = () => {
-        setUserStateValue({
-            name: "",
-            email: "",
-        })
-        router.push("/");
-        setMenuOpen(false);
+    const handleCloseMenuModal = () => {
+        setMenuModal({ open: false })
     }
 
     const handleUser = () => {
@@ -87,14 +84,15 @@ const Navbar = () => {
                                 </>
                             )}
 
-                            {menuOpen ? (
-                                <FiX className="text-2xl cursor-pointer hover:text-violet-600" onClick={() => setMenuOpen(false)} />
+                            {menuModal.open ? (
+                                <FiX className="text-2xl cursor-pointer hover:text-violet-600" onClick={handleCloseMenuModal} />
                             ) : (
-                                <FiMenu className="text-2xl cursor-pointer hover:text-violet-600" onClick={() => setMenuOpen(true)} />
+                                <FiMenu className="text-2xl cursor-pointer hover:text-violet-600" onClick={handleOpenMenuModal} />
                             )}
                         </div>
+                        <MenuModal />
 
-                        {menuOpen &&
+                        {/* {menuOpen &&
                             <ul className="w-32 md:w-48 lg:w-80 absolute top-10 md:top-12 right-0 flex flex-col bg-white border border-gray-700 rounded-xl tracking-wide lg:tracking-wider">
                                 {!userStateValue.name &&
                                     <>
@@ -129,7 +127,7 @@ const Navbar = () => {
                                     </>
                                 }
                             </ul>
-                        }
+                        } */}
                     </div>
                 </div>
             </div >
