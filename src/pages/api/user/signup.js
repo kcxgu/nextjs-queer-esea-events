@@ -12,25 +12,25 @@ export default async function handler(req, res) {
     }
 }
 
-async function getUser(req, res) {
-    try {
-        console.log("Connecting to MongoDB")
-        await connectdb();
-        console.log("Connected to MongoDB")
+// async function getUser(req, res) {
+//     try {
+//         console.log("Connecting to MongoDB")
+//         await connectdb();
+//         console.log("Connected to MongoDB")
 
-        const user = await UserModel.find({});
-        res.json(user);
-    } catch (error) {
-        res.status(404).json({ error: "User not found" })
-        console.log(error)
-    }
-}
+//         const user = await UserModel.find({});
+//         res.json(user);
+//     } catch (error) {
+//         res.status(404).json({ error: "User not found" })
+//         console.log(error)
+//     }
+// }
 
 async function addUser(req, res) {
     try {
-        console.log("Connecting to MongoDB")
+        console.log("Connecting to MongoDB, sign up")
         await connectdb();
-        console.log("Connected to MongoDB")
+        console.log("Connected to MongoDB, sign up")
 
         const { email } = req.body;
         const data = await UserModel.findOne({ email })

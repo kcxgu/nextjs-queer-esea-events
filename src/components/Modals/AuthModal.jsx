@@ -85,8 +85,10 @@ const AuthModal = () => {
                 setLogInErrorMsg(res.data.message);
             } else {
                 setUserStateValue({
-                    name: res.data.user.name,
-                    email: res.data.user.email,
+                    id: res.data.id,
+                    name: res.data.name,
+                    email: res.data.email,
+                    website: res.data.website
                 });
                 setModalState(prev => ({
                     ...prev,
@@ -119,7 +121,7 @@ const AuthModal = () => {
                     process.env.NEXT_PUBLIC_EMAIL_TEMPLATE_ID,
                     {
                         user_email: email,
-                        message: `Click here to reset your password: www.example.com/reset-password/${res.data.id}`
+                        message: `Click here to reset your password: www.example.com/user/reset-password/${res.data.id}`
                     },
                     process.env.NEXT_PUBLIC_EMAIL_PUBLIC_KEY
                 ).then(res => {

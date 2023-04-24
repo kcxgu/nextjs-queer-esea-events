@@ -25,6 +25,18 @@ const Navbar = () => {
         }
     }
 
+    const handleLogIn = () => {
+        if (!userStateValue.name) {
+            setAuthModalState({
+                open: true,
+            });
+        }
+    }
+
+    const handleSignUp = () => {
+        router.push("/signup")
+    }
+
     const handleLogOut = () => {
         setUserStateValue({
             name: "",
@@ -32,6 +44,16 @@ const Navbar = () => {
         })
         router.push("/");
         setMenuOpen(false);
+    }
+
+    const handleUser = () => {
+        if (userStateValue.id) {
+            router.push(`/user/${userStateValue.id}`);
+        } else {
+            setAuthModalState({
+                open: true,
+            });
+        }
     }
 
     return (
@@ -46,16 +68,23 @@ const Navbar = () => {
                         <div className="flex flex-row items-center gap-3">
                             {userStateValue.name ? (
                                 <>
-                                    <div>
+                                    <div onClick={handleUser}>
                                         <FaUserCircle className="text-2xl" />
                                     </div>
                                 </>
                             ) : (
-                                <div className="bg-white rounded-full p-3 cursor-pointer hover:bg-indigo-400 hover:text-white"
-                                    onClick={handleAddEvent}
-                                >
-                                    <MdAdd className="text-xl" />
-                                </div>
+                                <>
+                                    <button className="hidden md:block bg-violet-400 text-white py-2 px-4 rounded-lg tracking-wider text-lg font-semibold hover:opacity-80"
+                                        onClick={handleLogIn}
+                                    >
+                                        Log In</button>
+
+                                    <div className="bg-white rounded-full p-3 cursor-pointer hover:bg-indigo-400 hover:text-white"
+                                        onClick={handleAddEvent}
+                                    >
+                                        <MdAdd className="text-xl" />
+                                    </div>
+                                </>
                             )}
 
                             {menuOpen ? (
@@ -66,19 +95,38 @@ const Navbar = () => {
                         </div>
 
                         {menuOpen &&
-                            <ul className="w-32 md:w-48 lg:w-72 absolute top-10 md:top-12 right-0 flex flex-col bg-white border border-gray-700 rounded-xl">
+                            <ul className="w-32 md:w-48 lg:w-80 absolute top-10 md:top-12 right-0 flex flex-col bg-white border border-gray-700 rounded-xl tracking-wide lg:tracking-wider">
+                                {!userStateValue.name &&
+                                    <>
+                                        <li className="rounded-t-xl border-b py-5 text-center font-medium text-lg hover:opacity-50 cursor-pointer"
+                                            onClick={handleSignUp}
+                                        >
+                                            Sign Up
+                                        </li>
+                                        <li className="md:hidden border-b py-5 text-center font-medium text-lg hover:opacity-50 cursor-pointer"
+                                            onClick={handleLogIn}
+                                        >
+                                            Log In
+                                        </li>
+                                    </>
+                                }
                                 <li className="border-b py-5 text-center font-medium text-lg hover:opacity-50 cursor-pointer">
-                                    <Link href="/add-event" onClick={() => setMenuOpen(false)}>Add event</Link>
+                                    <Link href="/community/partners">See all registered organisations / individuals</Link>
                                 </li>
                                 <li className="border-b py-5 text-center font-medium text-lg hover:opacity-50 cursor-pointer">
-                                    See all queer organisations
+                                    <Link href="/community/guidelines">See our guidelines</Link>
                                 </li>
                                 {userStateValue.name &&
-                                    <li className="py-5 text-center font-medium text-lg hover:opacity-50 cursor-pointer"
-                                        onClick={handleLogOut}
-                                    >
-                                        Log Out
-                                    </li>
+                                    <>
+                                        <li className="border-b py-5 text-center font-medium text-lg hover:opacity-50 cursor-pointer">
+                                            <Link href="/add-event" onClick={() => setMenuOpen(false)}>Add event</Link>
+                                        </li>
+                                        <li className="py-5 text-center font-medium text-lg hover:opacity-50 cursor-pointer"
+                                            onClick={handleLogOut}
+                                        >
+                                            Log Out
+                                        </li>
+                                    </>
                                 }
                             </ul>
                         }

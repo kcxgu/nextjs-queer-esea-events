@@ -3,9 +3,9 @@ import UserModel from "@/models/userSchema";
 
 export default async function login(req, res) {
     try {
-        console.log("Connecting to MongoDB")
+        console.log("Connecting to MongoDB, login")
         await connectdb();
-        console.log("Connected to MongoDB")
+        console.log("Connected to MongoDB, login")
 
         const { email, password } = req.body;
 
@@ -17,7 +17,13 @@ export default async function login(req, res) {
                 } else if (!isMatch) {
                     return res.send({ message: "Incorrect email or password" })
                 } else {
-                    return res.send({ user })
+                    return res.send({
+                        id: user._id,
+                        email: user.email,
+                        name: user.name,
+                        website: user.website,
+                        socialMedia: user.socialMedia,
+                    })
                 }
             })
             res.status(201)

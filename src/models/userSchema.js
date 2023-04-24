@@ -6,6 +6,7 @@ const userSchema = new Schema({
         type: String,
         required: true,
         trim: true,
+        unique: true,
     },
     website: {
         type: String,
@@ -19,6 +20,25 @@ const userSchema = new Schema({
     password: {
         type: String,
         required: true,
+        trim: true,
+    },
+    socialMedia: {
+        twitter: {
+            type: String,
+            trim: true,
+        },
+        instagram: {
+            type: String,
+            trim: true,
+        },
+        facebook: {
+            type: String,
+            trim: true,
+        },
+        discord: {
+            type: String,
+            trim: true,
+        },
     }
 })
 

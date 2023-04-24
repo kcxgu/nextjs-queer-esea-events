@@ -32,7 +32,7 @@ const EventsCard = ({ organisationName, eventName, description, format, addressL
                     {price === 0 ? (
                         <p className="text-right text-orange-600 font-medium text-xl tracking-wider">FREE</p>
                     ) : (
-                        <p className="text-right text-blue-500  font-medium text-xl tracking-wide">£{price.toFixed(2)}</p>
+                        <p className="text-right text-blue-500  font-medium text-xl tracking-wider">£{price.toFixed(2)}</p>
                     )}
                     <div className="text-slate-700 font-medium text-lg py-2 tracking-wide">
                         <div className="w-full flex flex-col md:flex-row md:items-center md:gap-0.5 justify-between pb-1 md:pb-2">
