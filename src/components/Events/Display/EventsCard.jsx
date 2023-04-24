@@ -7,7 +7,7 @@ import { BsShareFill } from "react-icons/bs";
 const EventsCard = ({ id, organisationName, eventName, description, format, addressLine1, addressLine2, city, postcode, eventDate, startTime, endTime, price, eventURL }) => {
 
     const [openModal, setOpenModal] = useState(false);
-    const [shareError, setShareError] = useState(false);
+    const [shareSuccess, setShareSuccess] = useState(false);
 
     const date = new Date(eventDate).toLocaleDateString("en-UK", { day: "numeric", month: "long", year: "numeric" })
 
@@ -37,27 +37,28 @@ const EventsCard = ({ id, organisationName, eventName, description, format, addr
                 .share(shareData)
                 .then(() => {
                     console.log("Successfully shared");
-                    setShareError(false)
+                    setShareSuccess(true)
+                    setTimeout(() => {
+                        setShareSuccess(false)
+                    }, 4000)
                 })
                 .catch((error) => {
                     console.error("Something went wrong", error);
-                    setShareError(true)
+                    setShareSuccess(false)
                 });
         } else {
             try {
                 navigator.clipboard.writeText(`Hey, want to come to this? ${eventName}, ${eventURL}`)
-                setShareError(false)
+                setShareSuccess(true)
+                setTimeout(() => {
+                    setShareSuccess(false)
+                }, 5000)
             } catch (error) {
-                setShareError(true)
+                setShareSuccess(false)
             }
         }
     }
 
-    useEffect(() => {
-        setTimeout(() => {
-            setShareError(true)
-        }, 5000)
-    }, [])
 
     return (
         <div className="w-full max-w-3xl lg:max-w-4xl px-6 mb-10">
@@ -68,16 +69,18 @@ const EventsCard = ({ id, organisationName, eventName, description, format, addr
 
                 <div className="w-full bg-white py-12 px-8 md:px-12 rounded-xl shadow-lg shadow-gray-200">
                     <div className="flex flex-row justify-between items-center gap-4 py-2">
-                        {shareError ? (
+                        {shareSuccess ? (
+                            <div className="flex flex-row items-center text-gray-800 gap-2 tracking-wide cursor-pointer hover:opacity-80">
+                                <p className="md:text-lg animate-bounce">Copied!</p>
+                            </div>
+
+                        ) : (
                             <div className="flex flex-row items-center text-gray-800 gap-2 tracking-wide cursor-pointer hover:opacity-80" onClick={handleShare}>
                                 <BsShareFill />
                                 <p className="md:text-lg">(Share)</p>
                             </div>
-                        ) : (
-                            <div className="flex flex-row items-center text-gray-800 gap-2 tracking-wide cursor-pointer hover:opacity-80">
-                                <p className="md:text-lg">Copied!</p>
-                            </div>
                         )}
+
                         {price === 0 ? (
                             <p className="text-right text-orange-600 font-medium text-xl tracking-wider">FREE</p>
                         ) : (
