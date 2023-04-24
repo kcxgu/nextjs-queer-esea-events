@@ -57,7 +57,7 @@ const ReportModal = ({ id, organisationName, eventName, description, eventURL })
     }
 
     return (
-        <div>
+        <div className="pt-4">
             <div className="relative cursor-pointer hover:opacity-70" onClick={() => setReportModal(true)}>
                 <p className="float-right flex flex-row items-center gap-2 tracking-wider text-gray-500"><BsFlag />(Report)</p>
             </div>

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { AiOutlineDown, AiOutlineUp } from "react-icons/ai"
 import Link from "next/link";
 import ReportModal from "@/components/Modals/ReportModal";
+import { BsShareFill } from "react-icons/bs";
 
 const EventsCard = ({ id, organisationName, eventName, description, format, addressLine1, addressLine2, city, postcode, eventDate, startTime, endTime, price, eventURL }) => {
 
@@ -22,6 +23,28 @@ const EventsCard = ({ id, organisationName, eventName, description, format, addr
         return item.charAt(0).toUpperCase() + item.slice(1)
     }
 
+    const handleShare = () => {
+
+        const shareData = {
+            title: "Hey, want to come to this?",
+            text: { eventName },
+            url: { eventURL },
+        }
+
+        if (navigator.share && navigator.canShare(shareData)) {
+            navigator
+                .share(shareData)
+                .then(() => {
+                    console.log("Successfully shared");
+                })
+                .catch((error) => {
+                    console.error("Something went wrong", error);
+                });
+        } else {
+            navigator.clipboard.writeText(`Hey, want to come to this? ${eventName}, ${eventURL}`)
+        }
+    }
+
     return (
         <div className="w-full max-w-3xl lg:max-w-4xl px-6 mb-10">
             <div className="md:flex md:flex-row">
@@ -29,12 +52,18 @@ const EventsCard = ({ id, organisationName, eventName, description, format, addr
                     <div className="text-center text-lg lg:text-xl text-gray-500 px-8">{new Date(eventDate).toLocaleString("default", { weekday: "short", day: "numeric", month: "short" })}</div>
                 </div>
 
-                <div className="w-full bg-white py-6 px-8 md:px-12 rounded-xl shadow-lg shadow-gray-200">
-                    {price === 0 ? (
-                        <p className="text-right text-orange-600 font-medium text-xl tracking-wider">FREE</p>
-                    ) : (
-                        <p className="text-right text-blue-500  font-medium text-xl tracking-wider">£{price.toFixed(2)}</p>
-                    )}
+                <div className="w-full bg-white py-12 px-8 md:px-12 rounded-xl shadow-lg shadow-gray-200">
+                    <div className="flex flex-row justify-between items-center gap-4 py-2">
+                        <div className="flex flex-row items-center text-gray-800 gap-2 tracking-wide cursor-pointer hover:opacity-80" onClick={handleShare}>
+                            <BsShareFill />
+                            <p className="md:text-lg">(Share)</p>
+                        </div>
+                        {price === 0 ? (
+                            <p className="text-right text-orange-600 font-medium text-xl tracking-wider">FREE</p>
+                        ) : (
+                            <p className="text-right text-blue-500  font-medium text-xl tracking-wider">£{price.toFixed(2)}</p>
+                        )}
+                    </div>
                     <div className="text-slate-700 font-medium text-lg py-2 tracking-wide">
                         <div className="w-full flex flex-col md:flex-row md:items-center md:gap-0.5 justify-between pb-1 md:pb-2">
                             <p className="text-lg md:text-xl md:mr-4">{titleCap(eventName)}</p>
