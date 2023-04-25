@@ -27,15 +27,6 @@ const Navbar = () => {
         setMenuModal({ open: false })
     }
 
-    const handleLogIn = () => {
-        if (!userStateValue.name) {
-            setAuthModalState({
-                open: true,
-            });
-            setMenuModal({ open: false })
-        }
-    }
-
     const handleOpenMenuModal = () => {
         setMenuModal({ open: true })
     }
@@ -59,7 +50,7 @@ const Navbar = () => {
             <div className="w-full px-6 sm:px-10 py-4 md:py-6 border-b border-gray-200">
                 <div className="max-w-7xl flex flex-row items-center justify-between mx-auto">
                     <Link href="/" onClick={() => setMenuModal({ open: false })}>
-                        <p className="tracking-wide text-lg font-medium md:text-xl text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-rose-400">Queer ESEA Events</p>
+                        <p className="tracking-wide text-lg font-medium md:text-xl">Hey Queer Asians</p>
                     </Link>
                     <div className="relative">
                         <div className="flex flex-row items-center gap-3 lg:gap-4 cursor-pointer">

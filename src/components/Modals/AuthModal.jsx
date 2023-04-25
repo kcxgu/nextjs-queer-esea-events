@@ -285,10 +285,10 @@ const AuthModal = () => {
                                                         Log In
                                                     </button>
                                                     <p
-                                                        className="text-teal-600 tracking-wide text-center pt-8 cursor-pointer hover:underline underline-offset-4 decoration-2 decoration-teal-500"
+                                                        className="text-violet-600 tracking-wide text-center pt-8 cursor-pointer hover:underline underline-offset-4 decoration-2 decoration-violet-500"
                                                         onClick={handleSignUp}
                                                     >
-                                                        Request to become a member
+                                                        Sign Up
                                                     </p>
                                                     <p
                                                         className="text-gray-500 tracking-wide text-center pt-2 cursor-pointer hover:text-gray-700"

@@ -1,0 +1,7 @@
+User-agent: *
+Disallow: /api
+Disallow: /api/
+Disallow: /user
+Disallow: /user/
+Disallow: /legal/
+# Disallow: /*.modal$

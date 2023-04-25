@@ -14,8 +14,9 @@ const Footer = () => {
                 <Link href="/">
                     <p className="hover:text-gray-200 cursor-pointer">©HeyQueerAsians, a BAQC ESEA initiative</p>
                 </Link>
-                <div className="flex flex-row items-center gap-4">
-                </div>
+                <Link href="/community/guidelines">
+                    <p className="hover:text-gray-200 cursor-pointer pt-2 md:pt-0">Our Guidelines</p>
+                </Link>
                 <Link href="/legal/privacy">
                     <p className="hover:text-gray-200 cursor-pointer pt-2 md:pt-0">Privacy and Cookies</p>
                 </Link>
