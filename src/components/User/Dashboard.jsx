@@ -32,8 +32,6 @@ const Dashboard = () => {
         }
     }
 
-    console.log(userStateValue)
-
     const getEvents = async () => {
         const res = await axios.post("/api/events/findEventsByUser", { name: userStateValue.name })
         if (res.data.message) {
@@ -66,7 +64,8 @@ const Dashboard = () => {
 
             <div className="py-16 md:py-20 lg:py-24">
                 <h1 className="text-3xl md:text-4xl lg:text-5xl text-center">Hello {userStateValue.name} 👋</h1>
-                <p className="text-center pt-4 lg:pt-8 w-11/12 md:w-2/3 lg:w-1/2 mx-auto lg:text-lg">We would just like to say a massive thank you on behalf of the community. You are incredible ❤️.</p>
+                <p className="text-center pt-4 lg:pt-8 w-11/12 md:w-2/3 lg:w-1/2 mx-auto lg:text-lg">We would just like to say a massive thank you on behalf of the community.</p>
+                <p className="text-center pt-2 lg:pt-4 lg:text-lg tracking-wider">You are incredible ❤️.</p>
             </div>
 
             <EventsDetails events={events} />

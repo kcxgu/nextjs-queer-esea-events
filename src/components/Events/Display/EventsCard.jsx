@@ -68,24 +68,26 @@ const EventsCard = ({ id, organisationName, eventName, description, format, addr
                 </div>
 
                 <div className="w-full bg-white py-12 px-8 md:px-12 rounded-xl shadow-lg shadow-gray-200">
-                    <div className="flex flex-row justify-between items-center gap-4 py-2">
+                    <div className="flex flex-row justify-between items-center gap-4 py-2 md:pb-4">
                         {shareSuccess ? (
                             <div className="flex flex-row items-center text-gray-800 gap-2 tracking-wide cursor-pointer hover:opacity-80">
                                 <p className="md:text-lg animate-bounce">Copied!</p>
                             </div>
 
                         ) : (
-                            <div className="flex flex-row items-center text-gray-800 gap-2 tracking-wide cursor-pointer hover:opacity-80" onClick={handleShare}>
-                                <BsShareFill />
-                                <p className="md:text-lg">(Share)</p>
+                            <div className="flex flex-row items-center text-fuchsia-300 gap-2 tracking-wide cursor-pointer hover:text-fuchsia-400" onClick={handleShare}>
+                                <BsShareFill className="text-sm" />
+                                <p className="lg:text-lg">(Share)</p>
                             </div>
                         )}
 
-                        {price === 0 ? (
-                            <p className="text-right text-orange-600 font-medium text-xl tracking-wider">FREE</p>
-                        ) : (
-                            <p className="text-right text-blue-500  font-medium text-xl tracking-wider">£{price.toFixed(2)}</p>
-                        )}
+                        <div className="text-right font-medium text-xl lg:text-2xl tracking-wider">
+                            {price === 0 ? (
+                                <p className="text-orange-600">FREE</p>
+                            ) : (
+                                <p className="text-blue-500">£{price.toFixed(2)}</p>
+                            )}
+                        </div>
                     </div>
                     <div className="text-slate-700 font-medium text-lg py-2 tracking-wide">
                         <div className="w-full flex flex-col md:flex-row md:items-center md:gap-0.5 justify-between pb-1 md:pb-2">
@@ -102,11 +104,11 @@ const EventsCard = ({ id, organisationName, eventName, description, format, addr
                                 </>
                             ) : (
                                 <>
-                                    <div className="flex flex-row items-center gap-2 py-2 cursor-pointer hover:opacity-90"
+                                    <div className="flex flex-row items-center gap-2 py-2 text-blue-400 text-sm cursor-pointer hover:text-blue-500"
                                         onClick={() => setOpenModal(true)}
                                     >
-                                        <p className="text-blue-500 text-sm">See description</p>
-                                        <AiOutlineDown className="text-sm text-blue-500" />
+                                        <p>See description</p>
+                                        <AiOutlineDown />
                                     </div>
                                 </>
                             )}

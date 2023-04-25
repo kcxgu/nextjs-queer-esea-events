@@ -5,6 +5,7 @@ import { userState } from "../../atoms/userAtom";
 import { useRouter } from "next/router";
 import axios from "axios";
 import emailjs from "@emailjs/browser";
+import Spinner from "../Loader/Spinner";
 
 const AuthModal = () => {
     const router = useRouter();
@@ -88,7 +89,8 @@ const AuthModal = () => {
                     id: res.data.id,
                     name: res.data.name,
                     email: res.data.email,
-                    website: res.data.website
+                    website: res.data.website,
+                    socialMedia: res.data.socialMedia
                 });
                 setModalState(prev => ({
                     ...prev,
@@ -113,7 +115,7 @@ const AuthModal = () => {
         if (email.length >= 8) {
             setForgotPasswordError("");
 
-            const res = await axios.post("/api/user/forgotPassword", user)
+            const res = await axios.post("/api/user/forgotPassword", { email: email })
             if (res.data.message === "User Found") {
                 setLoading(true)
                 emailjs.send(
@@ -121,7 +123,7 @@ const AuthModal = () => {
                     process.env.NEXT_PUBLIC_EMAIL_TEMPLATE_ID,
                     {
                         user_email: email,
-                        message: `Click here to reset your password: www.example.com/user/reset-password/${res.data.id}`
+                        message: `Click here to reset your password: ${window.location.origin}/user/reset-password/${res.data.id}`
                     },
                     process.env.NEXT_PUBLIC_EMAIL_PUBLIC_KEY
                 ).then(res => {
@@ -153,7 +155,10 @@ const AuthModal = () => {
                             </div>
                             <div className="text-center flex flex-col justify-center">
                                 <p className="text-2xl lg:text-3xl font-semibold text-gray-600 tracking-wider pb-8">Sending Email</p>
-                                <p className="text-lg px-4 text-gray-700 tracking-wider leading-relaxed">Please wait</p>
+                                <div className="flex flex-row items-center gap-2 mx-auto">
+                                    <Spinner />
+                                    <p className="text-lg px-4 text-gray-700 tracking-wider leading-relaxed">Please wait</p>
+                                </div>
                             </div>
                         </div>
                         : (<>
