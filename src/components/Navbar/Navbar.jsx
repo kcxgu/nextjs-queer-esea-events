@@ -71,12 +71,6 @@ const Navbar = () => {
                                 </>
                             ) : (
                                 <>
-                                    {/* <button className="hidden md:block bg-violet-400 text-white py-2 px-4 rounded-lg tracking-wider text-lg font-semibold hover:opacity-80"
-                                        onClick={handleLogIn}
-                                    >
-                                            Log In
-                                        </button> */}
-
                                     <div className="bg-white rounded-full p-3 hover:bg-indigo-400 hover:text-white text-xl lg:text-3xl"
                                         onClick={handleAddEvent}
                                     >
