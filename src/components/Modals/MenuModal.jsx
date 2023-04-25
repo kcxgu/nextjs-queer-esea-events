@@ -1,23 +1,13 @@
 import { menuModalState } from "../../atoms/menuModal";
-import { authModalState } from "@/atoms/authModal";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import { userState } from "../../atoms/userAtom";
 import { useRouter } from "next/router";
 import Link from "next/link";
 
 const MenuModal = () => {
     const router = useRouter();
-    const setAuthModal = useSetRecoilState(authModalState);
     const [menuModal, setMenuModal] = useRecoilState(menuModalState);
     const [userStateValue, setUserStateValue] = useRecoilState(userState);
-
-    const handleLogIn = () => {
-        if (!userStateValue.name) {
-            setAuthModal({
-                open: true,
-            });
-        }
-    }
 
     const handleSignUp = () => {
         router.push("/signup")
@@ -45,25 +35,26 @@ const MenuModal = () => {
                             >
                                 Sign Up
                             </li>
-                            {/* <li className="md:hidden border-b py-5 text-center font-medium text-lg hover:opacity-50 cursor-pointer"
-                                onClick={handleLogIn}
-                            >
-                                Log In
-                            </li> */}
-                            <li className="border-b py-5 text-center font-medium text-lg hover:opacity-50 cursor-pointer" onClick={() => setMenuModal({ open: false })}>
-                                <Link href="/community/guidelines">See Our Guidelines</Link>
-                            </li>
+                            <Link href="/community/guidelines">
+                                <li className="border-b py-5 text-center font-medium text-lg hover:opacity-50 cursor-pointer" onClick={() => setMenuModal({ open: false })}>
+                                    See Our Guidelines
+                                </li>
+                            </Link>
                         </>
                     }
 
                     {userStateValue.name &&
                         <>
-                            <li className="border-b py-5 text-center font-medium text-lg hover:opacity-50 cursor-pointer" onClick={() => setMenuModal({ open: false })}>
-                                <Link href="/add-event">Add Event</Link>
-                            </li>
-                            <li className="border-b py-5 text-center font-medium text-lg hover:opacity-50 cursor-pointer" onClick={() => setMenuModal({ open: false })}>
-                                <Link href="/community/guidelines">See Our Guidelines</Link>
-                            </li>
+                            <Link href="/add-event">
+                                <li className="border-b py-5 text-center font-medium text-lg hover:opacity-50 cursor-pointer" onClick={() => setMenuModal({ open: false })}>
+                                    Add Event
+                                </li>
+                            </Link>
+                            <Link href="/community/guidelines">
+                                <li className="border-b py-5 text-center font-medium text-lg hover:opacity-50 cursor-pointer" onClick={() => setMenuModal({ open: false })}>
+                                    See Our Guidelines
+                                </li>
+                            </Link>
                             <li className="border-t border-gray-400 mx-4 md:mx-6 lg:mx-8 xl:mx-10 py-5 text-center font-medium text-lg hover:opacity-50 cursor-pointer"
                                 onClick={handleLogOut}
                             >

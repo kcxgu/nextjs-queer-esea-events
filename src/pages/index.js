@@ -1,12 +1,9 @@
 import { useState, useEffect } from "react";
-import { useSetRecoilState } from "recoil";
-import { menuModalState } from "../atoms/menuModal";
 import EventsSchedule from "@/components/Events/Display/EventsSchedule";
 import Hero from "@/components/Hero/Hero";
 import axios from "axios";
 
 export default function Home() {
-  const setMenuModalState = useSetRecoilState(menuModalState);
   const [events, setEvents] = useState([]);
   const [selectedCity, setSelectedCity] = useState("London");
   const [selectedMonth, setSelectedMonth] = useState("Month");
@@ -59,12 +56,8 @@ export default function Home() {
     getEvents();
   }, [])
 
-  const handleCloseMenuModal = () => {
-    setMenuModalState({ open: false })
-  }
-
   return (
-    <div onClick={handleCloseMenuModal}>
+    <div>
       <Hero
         events={events}
         selectedCity={selectedCity}

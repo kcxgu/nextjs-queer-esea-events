@@ -120,7 +120,7 @@ const AuthModal = () => {
                 setLoading(true)
                 emailjs.send(
                     process.env.NEXT_PUBLIC_EMAIL_SERVICE_ID,
-                    process.env.NEXT_PUBLIC_EMAIL_TEMPLATE_ID,
+                    process.env.NEXT_PUBLIC_EMAIL_FORGOT_TEMPLATE_ID,
                     {
                         user_email: email,
                         message: `Click here to reset your password: ${window.location.origin}/user/reset-password/${res.data.id}`

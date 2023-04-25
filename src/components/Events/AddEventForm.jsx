@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useRecoilState } from "recoil";
 import { userState } from "../../atoms/userAtom";
 import axios from "axios";
+import emailjs from "@emailjs/browser";
 
 const AddEventForm = ({ setUpdate }) => {
     const router = useRouter();
@@ -25,6 +26,10 @@ const AddEventForm = ({ setUpdate }) => {
     const [inPerson, setInPerson] = useState(false);
     const [online, setOnline] = useState(false);
     const [serverError, setServerError] = useState(false);
+    const [emailLoading, setEmailLoading] = useState(false);
+    const [emailSent, setEmailSent] = useState(false);
+    const [emailError, setEmailError] = useState(false);
+    const [userEmails, setUserEmails] = useState();
 
     const handleInput = (e) => {
         const { name, value } = e.target;
@@ -56,6 +61,10 @@ const AddEventForm = ({ setUpdate }) => {
         if (!price) setAddEventErrorMsg("Please ensure all fields are completed and are valid");
     }
 
+    const getEmails = async () => {
+        const res = await axios.get("/api/events/notification");
+        setUserEmails(res.data)
+    }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -89,6 +98,24 @@ const AddEventForm = ({ setUpdate }) => {
                 const res = await axios.post("/api/events/events", event);
                 if (res.status === 201) {
                     setUpdate(true);
+                    setEmailLoading(true)
+                    emailjs.send(
+                        process.env.NEXT_PUBLIC_EMAIL_SERVICE_ID,
+                        process.env.NEXT_PUBLIC_EMAIL_NOTIFICATION_TEMPLATE_ID,
+                        {
+                            user_email: userEmails,
+                            my_html: `<strong>Event Name</strong>: ${eventName} <br /><strong>Description</strong>:  ${description} <br /><strong>Price</strong>:  ${price} <br /><strong>Date</strong>:  ${eventDate} <br /><strong>Starts At</strong>: ${startTime} <br /><strong>Ends At</strong>: ${endTime} <br /><strong>Format</strong>: ${format} <br /><strong>For more details, checkout the event here</strong>: ${eventURL} <br />`
+                        },
+                        process.env.NEXT_PUBLIC_EMAIL_PUBLIC_KEY
+                    ).then(res => {
+                        if (res.status === 200) {
+                            setEmailLoading(false);
+                            setEmailSent(true)
+                        }
+                    }, error => {
+                        console.log(error)
+                        setEmailError(res.data.message)
+                    })
                     router.push("/");
                 }
             } catch (error) {
@@ -98,7 +125,9 @@ const AddEventForm = ({ setUpdate }) => {
         }
     }
 
-
+    useEffect(() => {
+        getEmails();
+    }, [])
 
     return (
         <div className="max-w-7xl py-10 md:py-12 lg:py-14 md:mx-auto">
@@ -115,7 +144,7 @@ const AddEventForm = ({ setUpdate }) => {
                                 htmlFor="eventName"
                                 className="font-medium text-gray-500"
                             >
-                                Event Name
+                                Event Name*
                             </label>
                             <input
                                 className="w-full border rounded-lg py-1 px-2 md:py-2 md:px-4 shadow-inner bg-gray-100 focus:bg-white"
@@ -132,7 +161,7 @@ const AddEventForm = ({ setUpdate }) => {
                                 htmlFor="description"
                                 className="font-medium text-gray-500"
                             >
-                                Brief Description
+                                Brief Description*
                             </label>
                             <textarea
                                 className="w-full border rounded-lg py-1 px-2 md:py-2 md:px-4 shadow-inner bg-gray-100 focus:bg-white"
@@ -149,7 +178,7 @@ const AddEventForm = ({ setUpdate }) => {
                                 htmlFor="eventDate"
                                 className="font-medium text-gray-500"
                             >
-                                Date of Event
+                                Date of Event*
                             </label>
                             <input
                                 className="w-full border rounded-lg py-1 px-2 md:py-2 md:px-4 shadow-inner bg-gray-100 focus:bg-white"
@@ -166,7 +195,7 @@ const AddEventForm = ({ setUpdate }) => {
                                     htmlFor="startTime"
                                     className="font-medium text-gray-500"
                                 >
-                                    Start Time
+                                    Start Time*
                                 </label>
                                 <input
                                     className="w-full border rounded-lg py-1 px-2 md:py-2 md:px-4 shadow-inner bg-gray-100 focus:bg-white"
@@ -182,7 +211,7 @@ const AddEventForm = ({ setUpdate }) => {
                                     htmlFor="endTime"
                                     className="font-medium text-gray-500"
                                 >
-                                    End Time
+                                    End Time*
                                 </label>
                                 <input
                                     className="w-full border rounded-lg py-1 px-2 md:py-2 md:px-4 shadow-inner bg-gray-100 focus:bg-white"
@@ -197,7 +226,7 @@ const AddEventForm = ({ setUpdate }) => {
 
                         <div>
                             <div className="flex flex-col md:flex-row gap-4">
-                                <p className="font-medium text-gray-500">The event is:</p>
+                                <p className="font-medium text-gray-500">The event is:*</p>
                                 <div className="flex flex-row gap-6">
                                     {inPerson ? (
                                         <p className="w-fit border rounded-lg py-1 px-3.5 md:py-2 md:px-4 bg-white border-gray-700 cursor-pointer"
@@ -235,7 +264,7 @@ const AddEventForm = ({ setUpdate }) => {
                                     <label
                                         className="font-medium text-gray-500"
                                     >
-                                        Address
+                                        Address*
                                     </label>
                                     <input
                                         className="w-full border rounded-lg py-1 px-2 md:py-2 md:px-4 shadow-inner bg-gray-100 focus:bg-white"
@@ -283,7 +312,7 @@ const AddEventForm = ({ setUpdate }) => {
                                 htmlFor="eventURL"
                                 className="font-medium text-gray-500"
                             >
-                                Link to event details or registration
+                                Link to event details or registration*
                             </label>
                             <input
                                 className="w-full border rounded-lg py-1 px-2 md:py-2 md:px-4 shadow-inner bg-gray-100 focus:bg-white"
@@ -300,7 +329,7 @@ const AddEventForm = ({ setUpdate }) => {
                                 htmlFor="price"
                                 className="font-medium text-gray-500"
                             >
-                                Price
+                                Price*
                             </label>
                             <div className="flex flex-row items-center gap-2">
                                 <div className="flex flex-row items-center gap-2">
