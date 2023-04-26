@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
+import { useRecoilState } from "recoil";
+import { userState } from "@/atoms/userAtom";
+import axios from "axios";
 import Head from "next/head";
 import EventsSchedule from "@/components/Events/Display/EventsSchedule";
 import Hero from "@/components/Hero/Hero";
-import axios from "axios";
 
 export default function Home() {
   const structuredData1 = {
@@ -20,6 +22,7 @@ export default function Home() {
     "url": "https://www.heyqueerasians.com/"
   }
 
+  const [userStateValue, setUserStateValue] = useRecoilState(userState);
   const [events, setEvents] = useState([]);
   const [selectedCity, setSelectedCity] = useState("London");
   const [selectedMonth, setSelectedMonth] = useState("Month");
@@ -67,6 +70,15 @@ export default function Home() {
 
   useEffect(() => {
     getEvents();
+  }, [])
+
+  useEffect(() => {
+    const loggedUser = localStorage.getItem("user");
+
+    if (loggedUser) {
+      setUserStateValue(JSON.parse(loggedUser))
+    }
+
   }, [])
 
   return (

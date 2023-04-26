@@ -57,7 +57,7 @@ const EventsDetails = ({ events }) => {
                     </div>
 
                     {events &&
-                        <div className="md:grid md:grid-cols-2 lg:gap-4">
+                        <div className="md:grid md:grid-cols-2 lg:gap-4 xl:gap-10">
                             {events.map(item =>
                                 <SimpleEventsCard
                                     key={item._id}

@@ -42,6 +42,7 @@ const Navbar = () => {
                 open: true,
             });
         }
+        setMenuModal({ open: false })
     }
 
     return (

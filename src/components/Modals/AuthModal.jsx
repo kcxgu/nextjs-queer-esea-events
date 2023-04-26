@@ -94,6 +94,13 @@ const AuthModal = () => {
                     website: res.data.website,
                     socialMedia: res.data.socialMedia
                 });
+                localStorage.setItem("user", JSON.stringify({
+                    id: res.data.id,
+                    name: res.data.name,
+                    email: res.data.email,
+                    website: res.data.website,
+                    socialMedia: res.data.socialMedia
+                }))
                 setModalState(prev => ({
                     ...prev,
                     open: false,

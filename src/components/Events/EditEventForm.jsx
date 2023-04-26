@@ -3,9 +3,8 @@ import { useRouter } from "next/router";
 import { useRecoilState } from "recoil";
 import { userState } from "../../atoms/userAtom";
 import axios from "axios";
-import emailjs from "@emailjs/browser";
 
-const AddEventForm = () => {
+const EditEventForm = () => {
     const router = useRouter();
     const [userStateValue, setUserStateValue] = useRecoilState(userState);
     const [format, setFormat] = useState("");
@@ -26,9 +25,6 @@ const AddEventForm = () => {
     const [inPerson, setInPerson] = useState(false);
     const [online, setOnline] = useState(false);
     const [serverError, setServerError] = useState(false);
-    const [emailSent, setEmailSent] = useState(false);
-    const [emailError, setEmailError] = useState(false);
-    const [userEmails, setUserEmails] = useState();
 
     const handleInput = (e) => {
         const { name, value } = e.target;
@@ -38,17 +34,53 @@ const AddEventForm = () => {
         })
     }
 
-    const handleSetOnlineTrue = () => {
-        setOnline(true)
-        setInPerson(false)
-        setFormat("Online")
-        setEventInput({
-            ...eventInput,
-            addressLine1: "",
-            addressLine2: "",
-            city: "",
-            postcode: "",
-        })
+    const getEvent = async (eid) => {
+        const res = await axios.post("/api/events/findEventById", { id: eid })
+        if (res.data.message) {
+            console.log(res.data.message);
+        } else {
+            const data = res.data[0]
+
+            if (data.format === "Online") {
+                setOnline(true);
+                setFormat(data.format);
+
+                setEventInput({
+                    ...eventInput,
+                    eventName: data.eventName,
+                    description: data.description,
+                    eventDate: data.eventDate.split("T")[0],
+                    startTime: data.startTime,
+                    endTime: data.endTime,
+                    addressLine1: "",
+                    addressLine2: "",
+                    city: "",
+                    postcode: "",
+                    eventURL: data.eventURL,
+                    price: data.price,
+                })
+            }
+
+            if (data.format === "In Person") {
+                setInPerson(true)
+                setFormat(data.format)
+
+                setEventInput({
+                    ...eventInput,
+                    eventName: data.eventName,
+                    description: data.description,
+                    eventDate: data.eventDate.split("T")[0],
+                    startTime: data.startTime,
+                    endTime: data.endTime,
+                    addressLine1: data.location.addressLine1,
+                    addressLine2: data.location.addressLine2,
+                    city: data.location.city,
+                    postcode: data.location.postcode,
+                    eventURL: data.eventURL,
+                    price: data.price,
+                })
+            }
+        }
     }
 
     const checkErrors = () => {
@@ -71,12 +103,20 @@ const AddEventForm = () => {
         }
     }
 
-    const getEmails = async () => {
-        const res = await axios.get("/api/events/notification");
-        setUserEmails(res.data)
+    const handleSetOnlineTrue = () => {
+        setOnline(true)
+        setInPerson(false)
+        setFormat("Online")
+        setEventInput({
+            ...eventInput,
+            addressLine1: "",
+            addressLine2: "",
+            city: "",
+            postcode: "",
+        })
     }
 
-    const handleSubmit = async (e) => {
+    const handleUpdate = async (e) => {
         e.preventDefault();
 
         checkErrors();
@@ -105,25 +145,9 @@ const AddEventForm = () => {
             }
 
             try {
-                const res = await axios.post("/api/events/events", event);
-                if (res.status === 201) {
-                    emailjs.send(
-                        process.env.NEXT_PUBLIC_EMAIL_SERVICE_ID,
-                        process.env.NEXT_PUBLIC_EMAIL_NOTIFICATION_TEMPLATE_ID,
-                        {
-                            user_email: userEmails,
-                            my_html: `<strong>Event Name</strong>: ${eventName} <br /><strong>Description</strong>:  ${description} <br /><strong>Price</strong>:  ${price} <br /><strong>Date</strong>:  ${eventDate} <br /><strong>Starts At</strong>: ${startTime} <br /><strong>Ends At</strong>: ${endTime} <br /><strong>Format</strong>: ${format} <br /><strong>For more details, checkout the event here</strong>: ${eventURL} <br />`
-                        },
-                        process.env.NEXT_PUBLIC_EMAIL_PUBLIC_KEY
-                    ).then(res => {
-                        if (res.status === 200) {
-                            setEmailSent(true)
-                        }
-                    }, error => {
-                        console.log(error)
-                        setEmailError(res.data.message)
-                    })
-                    router.push("/");
+                const res = await axios.put("/api/events/updateEvent", { id: router.query.eid, updatedEvent: event });
+                if (res.data.message === "Success!") {
+                    router.push(`/user/${userStateValue.id}`);
                 }
             } catch (error) {
                 console.log(error);
@@ -133,8 +157,17 @@ const AddEventForm = () => {
     }
 
     useEffect(() => {
-        getEmails();
-    }, [])
+        const { eid } = router.query
+
+        try {
+            if (eid) {
+                getEvent(eid)
+            }
+        } catch (error) {
+            console.log(error)
+        }
+
+    }, [router.query])
 
     return (
         <div className="max-w-7xl py-10 md:py-12 lg:py-14 md:mx-auto">
@@ -143,7 +176,7 @@ const AddEventForm = () => {
                 <>
                     <div>
                         <h1 className="text-center text-xl md:text-2xl lg:text-3xl font-medium tracking-wider">Hey {userStateValue.name}</h1>
-                        <h1 className="text-center text-3xl md:text-4xl lg:text-5xl font-medium tracking-wider pt-6 pb-12">Add a new event!</h1>
+                        <h1 className="text-center text-3xl md:text-4xl lg:text-5xl font-medium tracking-wider pt-6 pb-12">Edit your event</h1>
                     </div>
                     <form className="w-11/12 md:w-4/5 lg:w-2/3 mx-auto flex flex-col gap-6 md:gap-8 bg-white text-gray-700 py-6 md:py-14 px-8 md:px-12 rounded-xl text-lg shadow-lg">
                         <div className="flex flex-col gap-2">
@@ -159,6 +192,7 @@ const AddEventForm = () => {
                                 name="eventName"
                                 type="text"
                                 placeholder="A Queer Event"
+                                value={eventInput.eventName}
                                 onChange={handleInput}
                                 required
                             />
@@ -176,6 +210,7 @@ const AddEventForm = () => {
                                 name="description"
                                 rows={5}
                                 placeholder="A brief but queer description"
+                                value={eventInput.description}
                                 onChange={handleInput}
                                 required
                             />
@@ -192,6 +227,7 @@ const AddEventForm = () => {
                                 id="eventDate"
                                 name="eventDate"
                                 type="date"
+                                value={eventInput.eventDate}
                                 onChange={handleInput}
                                 required
                             />
@@ -209,6 +245,7 @@ const AddEventForm = () => {
                                     id="startTime"
                                     name="startTime"
                                     type="time"
+                                    value={eventInput.startTime}
                                     onChange={handleInput}
                                     required
                                 />
@@ -225,6 +262,7 @@ const AddEventForm = () => {
                                     id="endTime"
                                     name="endTime"
                                     type="time"
+                                    value={eventInput.endTime}
                                     onChange={handleInput}
                                     required
                                 />
@@ -234,6 +272,7 @@ const AddEventForm = () => {
                         <div>
                             <div className="flex flex-col md:flex-row gap-4">
                                 <p className="font-medium text-gray-500">The event is:*</p>
+
                                 <div className="flex flex-row gap-6">
                                     {inPerson ? (
                                         <p className="w-fit border rounded-lg py-1 px-3.5 md:py-2 md:px-4 bg-white border-gray-700 cursor-pointer"
@@ -279,6 +318,7 @@ const AddEventForm = () => {
                                         name="addressLine1"
                                         type="text"
                                         placeholder="Line 1 of Address"
+                                        value={eventInput.addressLine1}
                                         onChange={handleInput}
                                         required
                                     />
@@ -288,6 +328,7 @@ const AddEventForm = () => {
                                         name="addressLine2"
                                         type="text"
                                         placeholder="Line 2 of Address"
+                                        value={eventInput.addressLine2}
                                         onChange={handleInput}
                                     />
                                     <div className="flex flex-row gap-6 md:gap-10">
@@ -297,6 +338,7 @@ const AddEventForm = () => {
                                             name="city"
                                             type="text"
                                             placeholder="Town/City"
+                                            value={eventInput.city}
                                             onChange={handleInput}
                                             required
                                         />
@@ -306,6 +348,7 @@ const AddEventForm = () => {
                                             name="postcode"
                                             type="text"
                                             placeholder="Postcode"
+                                            value={eventInput.postcode}
                                             onChange={handleInput}
                                             required
                                         />
@@ -327,6 +370,7 @@ const AddEventForm = () => {
                                 name="eventURL"
                                 type="url"
                                 placeholder="Event Details URL"
+                                value={eventInput.eventURL}
                                 onChange={handleInput}
                                 required
                             />
@@ -348,6 +392,7 @@ const AddEventForm = () => {
                                         type="number"
                                         min={0}
                                         placeholder={5}
+                                        value={eventInput.price}
                                         onChange={handleInput}
                                         required
                                     />
@@ -361,10 +406,10 @@ const AddEventForm = () => {
                         {serverError && <p className="text-center text-red-500">We cannot add your event at this time. Please contact us</p>}
 
                         <button
-                            className="w-fit mx-auto bg-violet-700 text-white tracking-wider rounded-lg py-3 px-8 my-4 md:mt-6 font-semibold hover:opacity-90 ease-linear transition-all duration-150"
-                            onClick={handleSubmit}
+                            className="w-fit mx-auto bg-indigo-500 text-white tracking-wider rounded-lg py-3 px-8 my-4 md:mt-6 font-semibold hover:opacity-90 ease-linear transition-all duration-150"
+                            onClick={handleUpdate}
                         >
-                            Add Event
+                            Update Event
                         </button>
                     </form>
                 </>
@@ -374,4 +419,4 @@ const AddEventForm = () => {
     )
 }
 
-export default AddEventForm
+export default EditEventForm

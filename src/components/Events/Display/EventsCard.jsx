@@ -2,13 +2,13 @@ import { useState } from "react";
 import { useRecoilState } from "recoil";
 import { userState } from "../../../atoms/userAtom";
 import { AiOutlineDown, AiOutlineUp } from "react-icons/ai"
-import { BsShareFill, BsTrash } from "react-icons/bs";
+import { BsPencilSquare, BsShareFill, BsTrash } from "react-icons/bs";
 import { MdOutlineDeleteSweep } from "react-icons/md";
+import { useRouter } from "next/router";
 import axios from "axios";
 import Link from "next/link";
 import ReportModal from "@/components/Modals/ReportModal";
 import Spinner from "@/components/Loader/Spinner";
-import { useRouter } from "next/router";
 
 const EventsCard = ({ id, organisationName, eventName, description, format, addressLine1, addressLine2, city, postcode, eventDate, startTime, endTime, price, eventURL }) => {
 
@@ -81,6 +81,10 @@ const EventsCard = ({ id, organisationName, eventName, description, format, addr
             setDeleteLoading(false);
             router.reload();
         }
+    }
+
+    const handleEdit = () => {
+        router.push(`/user/edit-event/${id}`)
     }
 
     return (
@@ -167,35 +171,43 @@ const EventsCard = ({ id, organisationName, eventName, description, format, addr
                     <Link href={eventURL} target="_blank" rel="noopener noreferrer" className="hover:underline hover:underline-offset-2 md:hover:underline-offset-4 hover:decoration-indigo-400">
                         <p className="text-center text-slate-900 py-2 md:py-4 break-all">{eventURL}</p>
                     </Link>
-                    <div className="pt-4 float-right text-gray-400 cursor-pointer hover:text-gray-500">
+                    <div className="pt-4 text-gray-400 cursor-pointer">
                         {userStateValue.name && userStateValue.name === organisationName ? (
-                            <>
-                                {deleteLoading ? (
-                                    <div className="flex flex-row items-center gap-2">
-                                        <Spinner />
-                                        <p>Deleting...</p>
-                                    </div>
-                                ) : (
-                                    <>
-                                        {confirmDelete ? (
-                                            <div className="motion-safe:animate-bounce flex flex-row items-center gap-2"
-                                                onClick={handleDelete}
-                                            >
-                                                <MdOutlineDeleteSweep className="text-2xl" />
-                                                <p>Yes, please delete</p>
-                                            </div>
-                                        ) : (
-                                            <div className="flex flex-row items-center gap-2"
-                                                onClick={handleConfirmDelete}
-                                            >
-                                                <BsTrash />
-                                                <p>(Delete)</p>
-                                            </div>
-                                        )}
-                                    </>
-                                )}
+                            <div className="flex flex-row items-center justify-between">
+                                <div className="flex flex-row items-center gap-2 hover:text-gray-500"
+                                    onClick={handleEdit}
+                                >
+                                    <BsPencilSquare />
+                                    <p>(Edit)</p>
+                                </div>
+                                <>
+                                    {deleteLoading ? (
+                                        <div className="flex flex-row items-center gap-2">
+                                            <Spinner />
+                                            <p>Deleting...</p>
+                                        </div>
+                                    ) : (
+                                        <>
+                                            {confirmDelete ? (
+                                                <div className="motion-safe:animate-bounce flex flex-row items-center gap-2 hover:text-gray-500"
+                                                    onClick={handleDelete}
+                                                >
+                                                    <MdOutlineDeleteSweep className="text-2xl" />
+                                                    <p>Yes, please delete</p>
+                                                </div>
+                                            ) : (
+                                                <div className="flex flex-row items-center gap-2 hover:text-gray-500"
+                                                    onClick={handleConfirmDelete}
+                                                >
+                                                    <BsTrash />
+                                                    <p>(Delete)</p>
+                                                </div>
+                                            )}
+                                        </>
+                                    )}
 
-                            </>
+                                </>
+                            </div>
                         ) : (
                             <ReportModal
                                 id={id}

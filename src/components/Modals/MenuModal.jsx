@@ -25,6 +25,7 @@ const MenuModal = () => {
             name: "",
             email: "",
         })
+        localStorage.clear();
         router.replace("/");
         setMenuModal({ open: false });
     }

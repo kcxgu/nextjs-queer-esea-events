@@ -9,9 +9,6 @@ export default async function handler(req, res) {
         case "POST": {
             return addEvent(req, res);
         }
-        case 'PUT': {
-            return updateEvent(req, res);
-        }
     }
 }
 
@@ -42,43 +39,4 @@ async function addEvent(req, res) {
     } catch (error) {
         res.status(422).json({ error: "Unable to add new event." })
     }
-}
-
-async function updateEvent(req, res) {
-    try {
-        console.log("Connecting to MongoDB, updateEvent")
-        await connectdb();
-        console.log("Connected to MongoDB, updateEvent")
-
-        const { id, updatedEvent } = req.body;
-
-        const event = await EventsModel.replaceOne({ _id: id }, { event: updatedEvent })
-
-        return res.acknowledged
-
-    } catch (error) {
-        console.log(error)
-    }
-
-    // try {
-    //     let { db } = await connectToDatabase();
-
-    //     const { id, newComment } = JSON.parse(req.body);
-
-    //     await db.collection('reviews').updateOne(
-    //         {
-    //             _id: new ObjectId(id),
-    //         },
-    //         { $set: { feedback: newComment } }
-    //     );
-    //     return res.json({
-    //         message: 'Review updated successfully',
-    //         success: true,
-    //     });
-    // } catch (error: any) {
-    //     return res.json({
-    //         message: error.message,
-    //         success: false,
-    //     });
-    // }
 }

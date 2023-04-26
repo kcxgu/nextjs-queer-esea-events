@@ -6,7 +6,6 @@ import { useRouter } from "next/router";
 
 const AddEvent = () => {
     const router = useRouter();
-    const [update, setUpdate] = useState(false);
     const [userStateValue, setUserStateValue] = useRecoilState(userState);
 
     const checkUser = () => {
@@ -19,7 +18,7 @@ const AddEvent = () => {
 
     return (
         <>
-            <AddEventForm setUpdate={setUpdate} />
+            <AddEventForm />
         </>
     )
 }
