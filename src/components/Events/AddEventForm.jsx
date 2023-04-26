@@ -4,6 +4,7 @@ import { useRecoilState } from "recoil";
 import { userState } from "../../atoms/userAtom";
 import axios from "axios";
 import emailjs from "@emailjs/browser";
+import Spinner from "../Loader/Spinner";
 
 const AddEventForm = () => {
     const router = useRouter();
@@ -26,9 +27,14 @@ const AddEventForm = () => {
     const [inPerson, setInPerson] = useState(false);
     const [online, setOnline] = useState(false);
     const [serverError, setServerError] = useState(false);
-    const [emailSent, setEmailSent] = useState(false);
-    const [emailError, setEmailError] = useState(false);
     const [userEmails, setUserEmails] = useState();
+    const [addLoading, setAddLoading] = useState(false);
+
+
+    const isValidUrl = (urlString) => {
+        var regex = new RegExp("^(http[s]?:\\/\\/(www\\.)?|ftp:\\/\\/(www\\.)?|www\\.){1}([0-9A-Za-z-\\.@:%_\+~#=]+)+((\\.[a-zA-Z]{2,3})+)(/(.)*)?(\\?(.)*)?");
+        return regex.test(urlString);
+    }
 
     const handleInput = (e) => {
         const { name, value } = e.target;
@@ -51,24 +57,23 @@ const AddEventForm = () => {
         })
     }
 
-    const checkErrors = () => {
+    const checkErrors = async () => {
         const { eventName, description, eventDate, startTime, endTime, eventURL } = eventInput;
 
-        if (eventName.length < 4) setAddEventErrorMsg("Please ensure all fields are completed and are valid");
+        if (!isValidUrl(eventURL)) setAddEventErrorMsg("Please ensure you have entered a valid event details URL");
 
-        if (description.length < 10) setAddEventErrorMsg("Please ensure all fields are completed and are valid");
+        if (format === "") setAddEventErrorMsg("Please ensure you have selected a format");
 
-        if (eventDate === "") setAddEventErrorMsg("Please ensure all fields are completed and are valid");
+        if (endTime === "") setAddEventErrorMsg("Please ensure you have selected an end time");
 
-        if (startTime === "") setAddEventErrorMsg("Please ensure all fields are completed and are valid");
+        if (startTime === "") setAddEventErrorMsg("Please ensure you have selected a start time");
 
-        if (endTime === "") setAddEventErrorMsg("Please ensure all fields are completed and are valid");
+        if (eventDate === "") setAddEventErrorMsg("Please ensure you have selected a date for your event");
 
-        if (format === "") setAddEventErrorMsg("Please ensure all fields are completed and are valid");
+        if (description.length < 1) setAddEventErrorMsg("Please ensure you have a description for your event");
 
-        if (eventURL.length < 8) {
-            setAddEventErrorMsg("Please ensure all fields are completed and are valid")
-        }
+        if (eventName.length < 1) setAddEventErrorMsg("Please ensure you have a clear and descriptive event name");
+
     }
 
     const getEmails = async () => {
@@ -83,7 +88,7 @@ const AddEventForm = () => {
 
         const { eventName, description, eventDate, startTime, endTime, addressLine1, addressLine2, city, postcode, eventURL, price } = eventInput;
 
-        if (eventName.length >= 4 && description.length >= 10 && eventDate && startTime && endTime && format !== "" && eventURL.length >= 8) {
+        if (eventName.length >= 1 && description.length >= 1 && eventDate && startTime && endTime && format !== "" && isValidUrl(eventURL)) {
             setAddEventErrorMsg("")
             const date = new Date(eventDate).toISOString();
             const event = {
@@ -105,8 +110,10 @@ const AddEventForm = () => {
             }
 
             try {
+                setAddLoading(true)
                 const res = await axios.post("/api/events/events", event);
                 if (res.status === 201) {
+                    setAddLoading(false)
                     emailjs.send(
                         process.env.NEXT_PUBLIC_EMAIL_SERVICE_ID,
                         process.env.NEXT_PUBLIC_EMAIL_NOTIFICATION_TEMPLATE_ID,
@@ -117,13 +124,11 @@ const AddEventForm = () => {
                         process.env.NEXT_PUBLIC_EMAIL_PUBLIC_KEY
                     ).then(res => {
                         if (res.status === 200) {
-                            setEmailSent(true)
                         }
                     }, error => {
                         console.log(error)
-                        setEmailError(res.data.message)
                     })
-                    router.push("/");
+                    router.push(`/user/${userStateValue.id}}`);
                 }
             } catch (error) {
                 console.log(error);
@@ -356,16 +361,26 @@ const AddEventForm = () => {
                             </div>
                         </div>
 
-                        {addEventErrorMsg && <p className="text-center text-red-500">{addEventErrorMsg}</p>}
+                        {addEventErrorMsg && <p className="text-center text-red-500">{addEventErrorMsg}. If we've got this wrong, please <Link href="https://forms.gle/iGrrnA5tLXuEHjFR7" target="_blank" rel="noopener noreferrer" className="underline">let us know</Link>.</p>}
 
-                        {serverError && <p className="text-center text-red-500">We cannot add your event at this time. Please contact us</p>}
+                        {serverError && <p className="text-center text-red-500">We cannot add your event at this time. Please <Link href="https://forms.gle/iGrrnA5tLXuEHjFR7" target="_blank" rel="noopener noreferrer" className="underline">contact us</Link>.</p>}
 
-                        <button
-                            className="w-fit mx-auto bg-violet-700 text-white tracking-wider rounded-lg py-3 px-8 my-4 md:mt-6 font-semibold hover:opacity-90 ease-linear transition-all duration-150"
-                            onClick={handleSubmit}
-                        >
-                            Add Event
-                        </button>
+                        <div className="mx-auto">
+                            {addLoading ? (
+                                <div className="flex flex-row items-center gap-4 w-fit mx-auto text-indigo-500 border border-indigo-500 tracking-wide rounded-lg py-3 px-6 my-4 md:mt-6 text-sm md:text-base lg:text-lg font-semibold hover:opacity-90 ease-linear transition-all duration-150">
+                                    <Spinner />
+                                    <p>Adding event...</p>
+                                </div>
+                            ) : (
+                                <button
+                                    className="w-fit mx-auto bg-violet-600 text-white tracking-wider rounded-lg py-3 px-8 my-4 md:mt-6 font-semibold hover:opacity-90 ease-linear transition-all duration-150"
+                                    onClick={handleSubmit}
+                                >
+                                    Add Event
+                                </button>
+                            )}
+                        </div>
+
                     </form>
                 </>
             )}
