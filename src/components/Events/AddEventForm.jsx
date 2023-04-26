@@ -26,7 +26,6 @@ const AddEventForm = ({ setUpdate }) => {
     const [inPerson, setInPerson] = useState(false);
     const [online, setOnline] = useState(false);
     const [serverError, setServerError] = useState(false);
-    const [emailLoading, setEmailLoading] = useState(false);
     const [emailSent, setEmailSent] = useState(false);
     const [emailError, setEmailError] = useState(false);
     const [userEmails, setUserEmails] = useState();
@@ -98,7 +97,6 @@ const AddEventForm = ({ setUpdate }) => {
                 const res = await axios.post("/api/events/events", event);
                 if (res.status === 201) {
                     setUpdate(true);
-                    setEmailLoading(true)
                     emailjs.send(
                         process.env.NEXT_PUBLIC_EMAIL_SERVICE_ID,
                         process.env.NEXT_PUBLIC_EMAIL_NOTIFICATION_TEMPLATE_ID,
@@ -109,7 +107,6 @@ const AddEventForm = ({ setUpdate }) => {
                         process.env.NEXT_PUBLIC_EMAIL_PUBLIC_KEY
                     ).then(res => {
                         if (res.status === 200) {
-                            setEmailLoading(false);
                             setEmailSent(true)
                         }
                     }, error => {
@@ -354,7 +351,7 @@ const AddEventForm = ({ setUpdate }) => {
                         {serverError && <p className="text-center text-red-500">We cannot add your event at this time. Please contact us</p>}
 
                         <button
-                            className="w-fit mx-auto bg-emerald-700 text-white tracking-wider rounded-lg py-3 px-8 my-4 md:mt-6 font-semibold hover:opacity-90"
+                            className="w-fit mx-auto bg-emerald-700 text-white tracking-wider rounded-lg py-3 px-8 my-4 md:mt-6 font-semibold hover:opacity-90 ease-linear transition-all duration-150"
                             onClick={handleSubmit}
                         >
                             Add Event

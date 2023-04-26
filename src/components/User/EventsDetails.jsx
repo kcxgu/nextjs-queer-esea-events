@@ -1,13 +1,9 @@
 import { useState } from "react";
 import { BsCaretDownFill, BsCaretLeftFill, BsCaretUpFill } from "react-icons/bs";
+import SimpleEventsCard from "../Events/Display/SimpleEventsCard";
 
 const EventsDetails = ({ events }) => {
     const [eventsModal, setEventsModal] = useState(true);
-
-    const toDate = (eventDate) => {
-        const date = new Date(eventDate).toLocaleDateString("en-UK", { day: "numeric", month: "long", year: "numeric" })
-        return date
-    }
 
     return (
         <div className="flex flex-col lg:flex-row pb-10">
@@ -60,24 +56,18 @@ const EventsDetails = ({ events }) => {
                         <p>Hide</p>
                     </div>
 
-                    {events ? (
-                        <div className="md:grid md:grid-cols-2">
+                    {events &&
+                        <div className="md:grid md:grid-cols-2 lg:gap-4">
                             {events.map(item =>
-                                <div key={item._id} className="md:w-5/6 lg:w-4/5 border rounded-lg py-4 md:py-6 my-4 px-4 md:px-5 tracking-wide">
-                                    <p className="font-medium">{item.eventName}</p>
-                                    <div className="flex flex-row justify-between pt-2">
-                                        <p className="text-gray-500">{toDate(item.eventDate)}</p>
-                                        {item.price === 0 ? <p className="text-orange-600 font-medium tracking-wider">Free</p> : <p className="text-blue-500  font-medium tracking-wider">£{item.price.toFixed(2)}</p>}
-                                    </div>
-                                </div>
+                                <SimpleEventsCard
+                                    key={item._id}
+                                    id={item._id}
+                                    eventName={item.eventName}
+                                    eventDate={item.eventDate}
+                                    price={item.price}
+                                />
                             )}
                         </div>
-                    ) : (
-                        <div>
-                            <p>You don't seem to have posted an event yet</p>
-                            <p>Let us know if you think we've got it wrong.</p>
-                        </div>
-                    )
                     }
                 </div>
             }

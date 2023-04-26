@@ -3,7 +3,7 @@ import { useState } from "react";
 import axios from "axios";
 import EventsCard from "./EventsCard"
 
-const EventsSchedule = ({ events, selectedMonth, setSelectedMonth }) => {
+const EventsSchedule = ({ events, setEvents, selectedMonth, setSelectedMonth }) => {
     const [dropdown, setDropdown] = useState(false);
 
     const months = ["Any", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
@@ -105,6 +105,8 @@ const EventsSchedule = ({ events, selectedMonth, setSelectedMonth }) => {
                             {eventsThisMonth.map(item =>
                                 <EventsCard
                                     key={item._id}
+                                    events={events}
+                                    setEvents={setEvents}
                                     id={item._id}
                                     organisationName={item.organisationName}
                                     eventName={item.eventName}

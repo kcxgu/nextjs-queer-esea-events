@@ -1,15 +1,17 @@
 import { useState } from "react";
 import { authModalState } from "../../atoms/authModal"
-import { useRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import { userState } from "../../atoms/userAtom";
 import { useRouter } from "next/router";
 import axios from "axios";
 import emailjs from "@emailjs/browser";
 import Spinner from "../Loader/Spinner";
+import { menuModalState } from "@/atoms/menuModal";
 
 const AuthModal = () => {
     const router = useRouter();
     const [modalState, setModalState] = useRecoilState(authModalState);
+    const setMenuModal = useSetRecoilState(menuModalState);
     const [user, setUser] = useState({
         email: "",
         password: "",
@@ -96,7 +98,10 @@ const AuthModal = () => {
                     ...prev,
                     open: false,
                 }));
-                router.push("/add-event")
+                setMenuModal({
+                    open: false
+                })
+                // router.push("/add-event")
             }
         }
     }

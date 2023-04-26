@@ -114,6 +114,7 @@ export default function Home() {
         />
         <EventsSchedule
           events={selectedEvents}
+          setEvents={setEvents}
           selectedCity={selectedCity}
           selectedMonth={selectedMonth}
           setSelectedMonth={setSelectedMonth}

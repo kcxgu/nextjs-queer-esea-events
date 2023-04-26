@@ -1,13 +1,23 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { useRecoilState } from "recoil";
+import { userState } from "../../../atoms/userAtom";
 import { AiOutlineDown, AiOutlineUp } from "react-icons/ai"
+import { BsShareFill, BsTrash } from "react-icons/bs";
+import { MdOutlineDeleteSweep } from "react-icons/md";
+import axios from "axios";
 import Link from "next/link";
 import ReportModal from "@/components/Modals/ReportModal";
-import { BsShareFill } from "react-icons/bs";
+import Spinner from "@/components/Loader/Spinner";
+import { useRouter } from "next/router";
 
 const EventsCard = ({ id, organisationName, eventName, description, format, addressLine1, addressLine2, city, postcode, eventDate, startTime, endTime, price, eventURL }) => {
 
+    const router = useRouter();
+    const [userStateValue, setUserStateValue] = useRecoilState(userState);
     const [openModal, setOpenModal] = useState(false);
     const [shareSuccess, setShareSuccess] = useState(false);
+    const [confirmDelete, setConfirmDelete] = useState(false);
+    const [deleteLoading, setDeleteLoading] = useState(false);
 
     const date = new Date(eventDate).toLocaleDateString("en-UK", { day: "numeric", month: "long", year: "numeric" })
 
@@ -59,6 +69,19 @@ const EventsCard = ({ id, organisationName, eventName, description, format, addr
         }
     }
 
+    const handleConfirmDelete = () => {
+        setConfirmDelete(true);
+    }
+
+    const handleDelete = async () => {
+        setConfirmDelete(false);
+        setDeleteLoading(true);
+        const res = await axios.post("/api/events/deleteEvent", { _id: id });
+        if (res.data.message) {
+            setDeleteLoading(false);
+            router.reload();
+        }
+    }
 
     return (
         <div className="w-full max-w-3xl lg:max-w-4xl px-6 mb-10">
@@ -67,7 +90,7 @@ const EventsCard = ({ id, organisationName, eventName, description, format, addr
                     <div className="text-center text-lg lg:text-xl text-gray-500 px-8">{new Date(eventDate).toLocaleString("default", { weekday: "short", day: "numeric", month: "short" })}</div>
                 </div>
 
-                <div className="w-full bg-white py-12 px-8 md:px-12 rounded-xl shadow-lg shadow-gray-200">
+                <div className="w-full bg-white pt-12 pb-16 md:py-8 lg:py-10 px-8 md:px-12 rounded-xl shadow-lg shadow-gray-200">
                     <div className="flex flex-row justify-between items-center gap-4 py-2 md:pb-4">
                         {shareSuccess ? (
                             <div className="flex flex-row items-center text-gray-800 gap-2 tracking-wide cursor-pointer hover:opacity-80">
@@ -144,13 +167,45 @@ const EventsCard = ({ id, organisationName, eventName, description, format, addr
                     <Link href={eventURL} target="_blank" rel="noopener noreferrer" className="hover:underline hover:underline-offset-2 md:hover:underline-offset-4 hover:decoration-indigo-400">
                         <p className="text-center text-slate-900 py-2 md:py-4 break-all">{eventURL}</p>
                     </Link>
-                    <ReportModal
-                        id={id}
-                        organisationName={organisationName}
-                        eventName={eventName}
-                        description={eventName}
-                        eventURL={eventURL}
-                    />
+                    <div className="pt-4 float-right text-gray-400 cursor-pointer hover:text-gray-500">
+                        {userStateValue.name && userStateValue.name === organisationName ? (
+                            <>
+                                {deleteLoading ? (
+                                    <div className="flex flex-row items-center gap-2">
+                                        <Spinner />
+                                        <p>Deleting...</p>
+                                    </div>
+                                ) : (
+                                    <>
+                                        {confirmDelete ? (
+                                            <div className="motion-safe:animate-bounce flex flex-row items-center gap-2"
+                                                onClick={handleDelete}
+                                            >
+                                                <MdOutlineDeleteSweep className="text-2xl" />
+                                                <p>Yes, please delete</p>
+                                            </div>
+                                        ) : (
+                                            <div className="flex flex-row items-center gap-2"
+                                                onClick={handleConfirmDelete}
+                                            >
+                                                <BsTrash />
+                                                <p>(Delete)</p>
+                                            </div>
+                                        )}
+                                    </>
+                                )}
+
+                            </>
+                        ) : (
+                            <ReportModal
+                                id={id}
+                                organisationName={organisationName}
+                                eventName={eventName}
+                                description={eventName}
+                                eventURL={eventURL}
+                            />
+                        )}
+                    </div>
                 </div>
             </div>
         </div>

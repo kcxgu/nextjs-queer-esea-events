@@ -1,17 +1,23 @@
 import { menuModalState } from "../../atoms/menuModal";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import { userState } from "../../atoms/userAtom";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import { authModalState } from "@/atoms/authModal";
 
 const MenuModal = () => {
     const router = useRouter();
+    const setAuthModal = useSetRecoilState(authModalState);
     const [menuModal, setMenuModal] = useRecoilState(menuModalState);
     const [userStateValue, setUserStateValue] = useRecoilState(userState);
 
+    const handleLogIn = async (e) => {
+        setAuthModal({ open: true });
+    }
+
     const handleSignUp = () => {
-        router.push("/signup")
-        setMenuModal({ open: false })
+        router.push("/signup");
+        setMenuModal({ open: false });
     }
 
     const handleLogOut = () => {
@@ -30,6 +36,11 @@ const MenuModal = () => {
                 <ul className="w-32 md:w-48 lg:w-80 absolute top-10 md:top-14 lg:top-16 right-0 flex flex-col bg-white border border-gray-700 rounded-xl tracking-wide lg:tracking-wider">
                     {!userStateValue.name &&
                         <>
+                            <li className="rounded-t-xl border-b py-5 text-center font-medium text-lg hover:opacity-50 cursor-pointer"
+                                onClick={handleLogIn}
+                            >
+                                Log In
+                            </li>
                             <li className="rounded-t-xl border-b py-5 text-center font-medium text-lg hover:opacity-50 cursor-pointer"
                                 onClick={handleSignUp}
                             >
