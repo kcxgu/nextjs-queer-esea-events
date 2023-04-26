@@ -8,17 +8,6 @@ const Notification = () => {
     const [emailError, setEmailError] = useState("")
     const [notificationSuccess, setNotificationSuccess] = useState(false);
 
-    // const location = [];
-
-    // const capitalise = (item) => {
-    //     return item.charAt(0).toUpperCase() + item.slice(1)
-    // }
-
-    // events.forEach(item => {
-    //     if (item.location.city !== "" && !location.includes(item.location.city.trim())) location.push(capitalise(item.location.city));
-    //     if (item.format === "Online" && !location.includes("Online")) location.push(item.format);
-    // })
-
     const handleInput = e => {
         setEmailInput(e.target.value);
         if (emailInput.length > 0) setEmailError("");
@@ -59,8 +48,8 @@ const Notification = () => {
                 <>
                     {emailDropdown &&
                         <div className="lg:mr-20">
-                            <p className="text-center pt-4 text-gray-700 tracking-wide px-10">We are working on a location-specific notification solution.</p>
-                            <p className="text-center text-gray-700 tracking-wide px-10">For now, you will be notified whenever a new event is posted.</p>
+                            <p className="text-sm md:text-base text-center pt-4 text-gray-700 tracking-wide px-10">We are working on a location-specific notification solution.</p>
+                            <p className="text-sm md:text-base text-center text-gray-700 tracking-wide px-10">For now, you will be notified whenever a new event is posted.</p>
                             <div className="pt-6 flex flex-row justify-center gap-2 md:gap-4 mx-4 md:mx-auto">
                                 <input
                                     name="email"
@@ -76,6 +65,9 @@ const Notification = () => {
                                 </button>
                             </div>
                             {emailError && <p className="text-center text-red-500 text-sm md:text-base px-12 pt-4">{emailError}</p>}
+                            <p className="mt-4 -mb-4 md:mb-0 lg:-mb-8 w-fit mx-auto pt-4 text-gray-500 text-center lg:text-lg cursor-pointer hover:text-gray-900"
+                                onClick={() => setEmailDropdown(false)}
+                            >Collapse<span className="pl-2 pr-4">^_^</span></p>
                         </div>
                     }
                 </>
