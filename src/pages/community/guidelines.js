@@ -1,9 +1,9 @@
 const guidelines = () => {
     return (
         <div className="max-w-5xl w-full mx-auto px-8 py-10 tracking-wide leading-relaxed flex flex-col gap-2 text-gray-900">
-            <h1 className="text-3xl md:text-4xl py-4 md:pt-6 mg:pb-8 lg:pt-10 lg:pb-12 text-gray-900">Guiding principles</h1>
+            <h1 className="text-3xl md:text-4xl py-4 md:pt-6 md:pb-8 lg:pt-10 lg:pb-12 text-gray-900">Guiding principles</h1>
             <div className="flex flex-col gap-4 md:gap-6">
-                <div id="why-log-in" className="md:grid md:grid-cols-3 text-lg text-gray-800 flex flex-col gap-4 md:gap-6">
+                <div className="md:grid md:grid-cols-3 text-lg text-gray-800 flex flex-col gap-4 md:gap-6">
                     <p className="text-xl font-medium md:font-semibold md:border-r md:border-gray-600">Adding an event</p>
                     <div className="md:col-span-2 flex flex-col gap-2 md:gap-4 lg:gap-6 tracking-wider md:px-4 text-gray-600 md:text-xl">
                         <p>We welcome anyone who is organising or hosting a queer ESEA event to share their event on this platform.</p>
