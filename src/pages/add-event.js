@@ -1,8 +1,9 @@
 import { useEffect } from "react";
 import { useRecoilState } from "recoil";
 import { userState } from "../atoms/userAtom";
-import AddEventForm from "@/components/Events/AddEventForm"
 import { useRouter } from "next/router";
+import Head from "next/head";
+import AddEventForm from "@/components/Events/AddEventForm"
 
 const AddEvent = () => {
     const router = useRouter();
@@ -18,6 +19,9 @@ const AddEvent = () => {
 
     return (
         <>
+            <Head>
+                <title>Hey Queer Asians | Add An Event</title>
+            </Head>
             <AddEventForm />
         </>
     )

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import ResetPasswordForm from "@/components/User/ResetPassword"
 import { useRouter } from "next/router";
+import ResetPasswordForm from "@/components/User/ResetPassword"
 
 const ResetPassword = () => {
     const router = useRouter();
@@ -11,9 +11,12 @@ const ResetPassword = () => {
     }, [router.query])
 
     return (
-        <div>
+        <>
+            <Head>
+                <title>Hey Queer Asians | Reset Password</title>
+            </Head>
             <ResetPasswordForm id={id} />
-        </div>
+        </>
     )
 }
 

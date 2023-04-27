@@ -93,22 +93,17 @@ export default function Home() {
         <meta property="og:type" content="website" />
         <meta property="og:title" content="Hey Queer Asians" />
         <meta property="og:site_name" content="Hey Queer Asians" />
-        <meta
-          property="og:description"
-          content="Share and Discover Queer Asian Events Near You!"
-        />
-        <meta property="og:image" content="/logo.png" />
+        <meta property="og:description" content="Share and Discover Queer Asian Events Near You!" />
+        <meta property="og:image" content="/HeyQueerAsians.png" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:site" content="www.heyqueerasians.com" />
         <meta property="twitter:title" content="Share and Discover Queer Asian Events Near You!" />
-        <meta
-          property="twitter:description"
-          content="Share and Discover Queer Asian Events Near You!"
-        />
-        <meta name="twitter:image" content="/logo.png" />
-        <meta name="img_src" content="/logo.png" />
+        <meta property="twitter:description" content="Share and Discover Queer Asian Events Near You!" />
+        <meta name="twitter:image" content="/HeyQueerAsians.png" />
+        <meta name="img_src" content="/HeyQueerAsians.png" />
         <link rel="canonical" href="https://www.heyqueerasians.com/" key="canonical" />
         <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+        <link rel="icon" type="image/png" sizes="48x48" href="/apple-touch-icon.png" />
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
         <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
         <link rel="manifest" href="/site.webmanifest" />

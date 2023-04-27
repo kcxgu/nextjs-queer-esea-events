@@ -1,8 +1,12 @@
+import Head from "next/head";
 import Link from "next/link";
 
 const Privacy = () => {
     return (
         <>
+            <Head>
+                <title>Hey Queer Asians | Privacy and Cookies</title>
+            </Head>
             <div className="max-w-5xl w-full mx-auto px-8 py-10 tracking-wide leading-relaxed flex flex-col gap-2 text-gray-900">
                 <h1 className="text-3xl py-1 my-4">Privacy and Cookies</h1>
                 <div id="privacy">
