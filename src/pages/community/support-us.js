@@ -66,8 +66,6 @@ const SupportUs = () => {
                         >
                             Share
                         </p>
-
-                        <div className="hidden md:block w-80"></div>
                     </div>
 
                     <p>You can get in touch with us <Link href="https://forms.gle/iGrrnA5tLXuEHjFR7" target="_blank" rel="noopener noreferrer" className="text-violet-600 underline underline-offset-2 decoration-violet-500 hover:opacity-80 cursor-pointer">here</Link>.</p>

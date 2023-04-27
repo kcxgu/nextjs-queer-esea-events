@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import Head from "next/head";
 import ResetPasswordForm from "@/components/User/ResetPassword"
 
 const ResetPassword = () => {

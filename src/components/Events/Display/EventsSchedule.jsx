@@ -63,7 +63,7 @@ const EventsSchedule = ({ events, setEvents, selectedMonth, setSelectedMonth }) 
     return (
         <div className="max-w-7xl mx-auto py-8 md:py-0">
             <div className="w-full max-w-4xl lg:max-w-5xl flex flex-row items-center justify-between px-6 md:px-16 pt-4 pb-6 md:pt-8 md:pb-10">
-                <h3 className="text-2xl md:text-3xl tracking-wide">Currently: {new Date().toLocaleString("default", { month: "long", year: "numeric" })}</h3>
+                <h2 className="text-2xl md:text-3xl tracking-wide">Currently: {new Date().toLocaleString("default", { month: "long", year: "numeric" })}</h2>
 
                 {dropdown ? (
                     <div className="relative">

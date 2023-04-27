@@ -3,8 +3,10 @@ import { useRecoilState } from "recoil";
 import { userState } from "@/atoms/userAtom";
 import axios from "axios";
 import Head from "next/head";
+import Link from "next/link";
 import EventsSchedule from "@/components/Events/Display/EventsSchedule";
 import Hero from "@/components/Hero/Hero";
+import Skeleton from "@/components/Loader/Skeleton";
 
 export default function Home() {
   const structuredData1 = {
@@ -26,6 +28,8 @@ export default function Home() {
   const [events, setEvents] = useState([]);
   const [selectedCity, setSelectedCity] = useState("London");
   const [selectedMonth, setSelectedMonth] = useState("Month");
+  const [eventsLoading, setEventsLoading] = useState(false);
+  const [serverError, setServerError] = useState(false);
 
   let selectedEvents = [];
 
@@ -34,11 +38,15 @@ export default function Home() {
   }
 
   const getEvents = async () => {
+    setEventsLoading(true);
     try {
       const res = await axios.get("/api/events/events");
       setEvents(res.data);
+      setEventsLoading(false);
     } catch (error) {
       console.log(error)
+      setServerError(true)
+      setEventsLoading(false);
     }
   }
 
@@ -119,14 +127,30 @@ export default function Home() {
           selectedCity={selectedCity}
           setSelectedCity={setSelectedCity}
         />
-        <EventsSchedule
-          events={selectedEvents}
-          setEvents={setEvents}
-          selectedCity={selectedCity}
-          selectedMonth={selectedMonth}
-          setSelectedMonth={setSelectedMonth}
-          selectedEvents={selectedEvents}
-        />
+
+        {eventsLoading ? (
+          <Skeleton />
+        ) : (
+          <>
+            {serverError ? (
+              <div className="max-w-7xl mx-auto pb-24 md:pb-40 lg:pb-48">
+                <div className="w-full max-w-4xl lg:max-w-5xl px-6 md:px-16 pt-4 pb-6 md:pt-8 md:pb-10 tracking-wide">
+                  <h2 className="font-medium text-lg md:text-xl lg:text-2xl">Error fetching events</h2>
+                  <p className="text-lg pt-6 lg:text-xl">Please <Link href="https://forms.gle/iGrrnA5tLXuEHjFR7" target="_blank" rel="noopener noreferrer" className="text-violet-600 underline underline-offset-2 decoration-violet-500 hover:opacity-80 cursor-pointer">contact us</Link>.</p>
+                </div>
+              </div>
+            ) : (
+              <EventsSchedule
+                events={selectedEvents}
+                setEvents={setEvents}
+                selectedCity={selectedCity}
+                selectedMonth={selectedMonth}
+                setSelectedMonth={setSelectedMonth}
+                selectedEvents={selectedEvents}
+              />
+            )}
+          </>
+        )}
       </div>
     </>
   )
