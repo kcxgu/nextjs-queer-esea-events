@@ -24,9 +24,9 @@ const SupportUs = () => {
             <h1 className="text-4xl md:text-5xl py-4 md:pt-6 md:pb-8 lg:pt-10 lg:pb-12 text-gray-800">Support Us</h1>
             <div className="flex flex-col gap-4 md:gap-6 md:w-3/4 text-lg md:text-xl lg:text-2xl tracking-wide">
                 <p className="leading-normal"><span className="font-semibold">Hey Queer Asians</span> is one of our first initiatives at <Link href="https://baqc-esea.tilda.ws" target="_blank" rel="noopener noreferrer" className="underline underline-offset-4 decoration-2 hover:text-medium">BAQC ESEA</Link> and, my oh my, has it been a dream come true. We cannot be more proud of this platform.</p>
-                <p>If you're looking to support us. Here are some ways we can think of:</p>
+                <p>If you are looking to support us. Here are some ways we can think of:</p>
 
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-y-6 md:gap-x-10 md:justify-items-center md:place-items-center py-6">
+                <div className="flex flex-row justify-between flex-wrap mr-10 md:mr-0 md:grid md:grid-cols-4 gap-y-6 md:gap-x-10 md:justify-items-center md:place-items-center py-6">
                     <p className="bg-black text-white py-1.5 px-5 md:py-2.5 md:px-6 lg:py-3 lg:px-8 rounded-lg cursor-pointer hover:opacity-60"
                         onClick={goToSkills}
                     >
@@ -48,6 +48,8 @@ const SupportUs = () => {
 
                     <div className="hidden md:block w-80"></div>
                 </div>
+
+                <p>You can get in touch with us <Link href="https://forms.gle/iGrrnA5tLXuEHjFR7" target="_blank" rel="noopener noreferrer" className="text-violet-600 underline underline-offset-2 decoration-violet-500 hover:opacity-80 cursor-pointer">here</Link>.</p>
 
                 <div id="skills" className="flex flex-col gap-4 md:gap-6 border-t py-8 lg:py-12 mt-6 lg:text-xl">
                     <h2 className="text-2xl md:text-3xl lg:text-4xl font-medium tracking-wide py-2">Skills</h2>

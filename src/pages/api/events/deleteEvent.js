@@ -8,6 +8,7 @@ export default async function deleteEvent(req, res) {
         console.log("Connected to MongoDB, deleteEvent")
 
         const { _id } = req.body;
+
         await EventsModel.findOneAndRemove(
             { _id: _id }
         )

@@ -33,6 +33,7 @@ async function addEvent(req, res) {
         console.log("Connected to MongoDB, addEvent")
 
         const newEvent = new EventsModel(req.body);
+        console.log(newEvent)
         const event = await newEvent.save();
         res.status(201).json(event);
 

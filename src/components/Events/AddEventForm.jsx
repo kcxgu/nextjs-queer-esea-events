@@ -31,12 +31,6 @@ const AddEventForm = () => {
     const [userEmails, setUserEmails] = useState();
     const [addLoading, setAddLoading] = useState(false);
 
-
-    const isValidUrl = (urlString) => {
-        var regex = new RegExp("^(http[s]?:\\/\\/(www\\.)?|ftp:\\/\\/(www\\.)?|www\\.){1}([0-9A-Za-z-\\.@:%_\+~#=]+)+((\\.[a-zA-Z]{2,3})+)(/(.)*)?(\\?(.)*)?");
-        return regex.test(urlString);
-    }
-
     const handleInput = (e) => {
         const { name, value } = e.target;
         setEventInput({
@@ -61,7 +55,7 @@ const AddEventForm = () => {
     const checkErrors = async () => {
         const { eventName, description, eventDate, startTime, endTime, eventURL } = eventInput;
 
-        if (!isValidUrl(eventURL)) setAddEventErrorMsg("Please ensure you have entered a valid event details URL");
+        if (eventURL.length < 1) setAddEventErrorMsg("Please enter an event URL");
 
         if (format === "") setAddEventErrorMsg("Please ensure you have selected a format");
 
@@ -74,7 +68,6 @@ const AddEventForm = () => {
         if (description.length < 1) setAddEventErrorMsg("Please ensure you have a description for your event");
 
         if (eventName.length < 1) setAddEventErrorMsg("Please ensure you have a clear and descriptive event name");
-
     }
 
     const getEmails = async () => {
@@ -89,11 +82,17 @@ const AddEventForm = () => {
 
         const { eventName, description, eventDate, startTime, endTime, addressLine1, addressLine2, city, postcode, eventURL, price } = eventInput;
 
-        if (eventName.length >= 1 && description.length >= 1 && eventDate && startTime && endTime && format !== "" && isValidUrl(eventURL)) {
-            setAddEventErrorMsg("")
+        if (eventName.length >= 1 && description.length >= 1 && eventDate && startTime && endTime && format !== "" && eventURL.length >= 1) {
+
+            setAddEventErrorMsg("");
+            setAddLoading(true)
+
+            console.log(userEmails)
+
             const date = new Date(eventDate).toISOString();
             const event = {
                 organisationName: userStateValue.name,
+                organiserWebsite: userStateValue.website,
                 eventName: eventName,
                 description: description,
                 eventDate: date,
@@ -111,28 +110,31 @@ const AddEventForm = () => {
             }
 
             try {
-                setAddLoading(true)
                 const res = await axios.post("/api/events/events", event);
                 if (res.status === 201) {
                     setAddLoading(false)
-                    emailjs.send(
-                        process.env.NEXT_PUBLIC_EMAIL_SERVICE_ID,
-                        process.env.NEXT_PUBLIC_EMAIL_NOTIFICATION_TEMPLATE_ID,
-                        {
-                            user_email: userEmails,
-                            my_html: `<strong>Event Name</strong>: ${eventName} <br /><strong>Description</strong>:  ${description} <br /><strong>Price</strong>:  ${price} <br /><strong>Date</strong>:  ${eventDate} <br /><strong>Starts At</strong>: ${startTime} <br /><strong>Ends At</strong>: ${endTime} <br /><strong>Format</strong>: ${format} <br /><strong>For more details, checkout the event here</strong>: ${eventURL} <br />`
-                        },
-                        process.env.NEXT_PUBLIC_EMAIL_PUBLIC_KEY
-                    ).then(res => {
-                        if (res.status === 200) {
-                        }
-                    }, error => {
-                        console.log(error)
-                    })
-                    router.push(`/user/${userStateValue.id}}`);
+
+                    if (userEmails) {
+                        emailjs.send(
+                            process.env.NEXT_PUBLIC_EMAIL_SERVICE_ID,
+                            process.env.NEXT_PUBLIC_EMAIL_NOTIFICATION_TEMPLATE_ID,
+                            {
+                                user_email: userEmails,
+                                my_html: `<strong>Event Name</strong>: ${eventName} <br /><strong>Description</strong>:  ${description} <br /><strong>Price</strong>:  ${price} <br /><strong>Date</strong>:  ${eventDate} <br /><strong>Starts At</strong>: ${startTime} <br /><strong>Ends At</strong>: ${endTime} <br /><strong>Format</strong>: ${format} <br /><strong>For more details, checkout the event here</strong>: ${eventURL} <br />`
+                            },
+                            process.env.NEXT_PUBLIC_EMAIL_PUBLIC_KEY
+                        ).then(res => {
+                            if (res.status === 200) {
+                            }
+                        }, error => {
+                            console.log(error)
+                        })
+                    }
+                    router.push("/");
                 }
             } catch (error) {
                 console.log(error);
+                setAddLoading(false)
                 setServerError(true);
             }
         }
@@ -143,16 +145,16 @@ const AddEventForm = () => {
     }, [])
 
     return (
-        <div className="max-w-7xl py-10 md:py-12 lg:py-14 md:mx-auto">
+        <div className="max-w-7xl py-16 md:py-20 lg:py-24 md:mx-auto">
 
             {userStateValue.name && (
                 <>
                     <div>
                         <h1 className="text-center text-xl md:text-2xl lg:text-3xl font-medium tracking-wider">Hey {userStateValue.name}</h1>
-                        <h1 className="text-center text-3xl md:text-4xl lg:text-5xl font-medium tracking-wider pt-6 pb-12">Add a new event!</h1>
+                        <h1 className="text-center text-3xl md:text-4xl lg:text-5xl font-medium tracking-wider pt-6 pb-12 md:pb-16 lg:pb-20">Add a new event!</h1>
                     </div>
-                    <form className="w-11/12 md:w-4/5 lg:w-2/3 mx-auto flex flex-col gap-6 md:gap-8 bg-white text-gray-700 py-6 md:py-14 px-8 md:px-12 rounded-xl text-lg shadow-lg">
-                        <div className="flex flex-col gap-2">
+                    <form className="w-11/12 md:w-4/5 lg:w-2/3 mx-auto flex flex-col gap-6 md:gap-8 bg-white text-gray-700 py-6 md:py-14 px-8 md:px-12 border-t rounded-xl text-lg lg:text-xl shadow-lg">
+                        <div className="flex flex-col gap-2 lg:gap-4">
                             <label
                                 htmlFor="eventName"
                                 className="font-medium text-gray-500"
@@ -160,16 +162,17 @@ const AddEventForm = () => {
                                 Event Name*
                             </label>
                             <input
-                                className="w-full border rounded-lg py-1 px-2 md:py-2 md:px-4 shadow-inner bg-gray-100 focus:bg-white"
+                                className="w-full border rounded-lg py-1 px-2 md:py-2 md:px-4 lg:py-4 shadow-inner bg-gray-100 focus:bg-white"
                                 id="eventName"
                                 name="eventName"
                                 type="text"
                                 placeholder="A Queer Event"
+                                spellCheck="true"
                                 onChange={handleInput}
                                 required
                             />
                         </div>
-                        <div className="flex flex-col gap-2">
+                        <div className="flex flex-col gap-2 lg:gap-4">
                             <label
                                 htmlFor="description"
                                 className="font-medium text-gray-500"
@@ -177,16 +180,17 @@ const AddEventForm = () => {
                                 Brief Description*
                             </label>
                             <textarea
-                                className="w-full border rounded-lg py-1 px-2 md:py-2 md:px-4 shadow-inner bg-gray-100 focus:bg-white"
+                                className="w-full border rounded-lg py-1 px-2 md:py-2 md:px-4 lg:py-4 shadow-inner bg-gray-100 focus:bg-white"
                                 id="description"
                                 name="description"
                                 rows={5}
                                 placeholder="A brief but queer description"
+                                spellCheck="true"
                                 onChange={handleInput}
                                 required
                             />
                         </div>
-                        <div className="flex flex-col gap-2">
+                        <div className="flex flex-col gap-2 lg:gap-4">
                             <label
                                 htmlFor="eventDate"
                                 className="font-medium text-gray-500"
@@ -194,7 +198,7 @@ const AddEventForm = () => {
                                 Date of Event*
                             </label>
                             <input
-                                className="w-full border rounded-lg py-1 px-2 md:py-2 md:px-4 shadow-inner bg-gray-100 focus:bg-white"
+                                className="w-full border rounded-lg py-1 px-2 md:py-2 md:px-4 lg:py-4 shadow-inner bg-gray-100 focus:bg-white"
                                 id="eventDate"
                                 name="eventDate"
                                 type="date"
@@ -203,7 +207,7 @@ const AddEventForm = () => {
                             />
                         </div>
                         <div className="flex flex-row items-center justify-between gap-10">
-                            <div className="w-1/2 flex flex-col gap-2">
+                            <div className="w-1/2 flex flex-col gap-2 lg:gap-4">
                                 <label
                                     htmlFor="startTime"
                                     className="font-medium text-gray-500"
@@ -211,7 +215,7 @@ const AddEventForm = () => {
                                     Start Time*
                                 </label>
                                 <input
-                                    className="w-full border rounded-lg py-1 px-2 md:py-2 md:px-4 shadow-inner bg-gray-100 focus:bg-white"
+                                    className="w-full border rounded-lg py-1 px-2 md:py-2 md:px-4 lg:py-4 shadow-inner bg-gray-100 focus:bg-white"
                                     id="startTime"
                                     name="startTime"
                                     type="time"
@@ -219,7 +223,7 @@ const AddEventForm = () => {
                                     required
                                 />
                             </div>
-                            <div className="w-1/2 flex flex-col gap-2">
+                            <div className="w-1/2 flex flex-col gap-2 lg:gap-4">
                                 <label
                                     htmlFor="endTime"
                                     className="font-medium text-gray-500"
@@ -227,7 +231,7 @@ const AddEventForm = () => {
                                     End Time*
                                 </label>
                                 <input
-                                    className="w-full border rounded-lg py-1 px-2 md:py-2 md:px-4 shadow-inner bg-gray-100 focus:bg-white"
+                                    className="w-full border rounded-lg py-1 px-2 md:py-2 md:px-4 lg:py-4 shadow-inner bg-gray-100 focus:bg-white"
                                     id="endTime"
                                     name="endTime"
                                     type="time"
@@ -242,13 +246,13 @@ const AddEventForm = () => {
                                 <p className="font-medium text-gray-500">The event is:*</p>
                                 <div className="flex flex-row gap-6">
                                     {inPerson ? (
-                                        <p className="w-fit border rounded-lg py-1 px-3.5 md:py-2 md:px-4 bg-white border-gray-700 cursor-pointer"
+                                        <p className="w-fit border rounded-lg py-1 px-3.5 md:py-2 md:px-4 lg:py-4 bg-white border-gray-700 cursor-pointer"
                                             onClick={() => { setInPerson(false), setOnline(false), setFormat("") }}
                                         >
                                             In Person
                                         </p>
                                     ) : (
-                                        <p className="w-fit border rounded-lg py-1 px-3.5 md:py-2 md:px-4 shadow-inner bg-gray-100 cursor-pointer"
+                                        <p className="w-fit border rounded-lg py-1 px-3.5 md:py-2 md:px-4 lg:py-4 shadow-inner bg-gray-100 cursor-pointer"
                                             onClick={() => { setInPerson(true), setOnline(false), setFormat("In Person") }}
                                         >
                                             In Person
@@ -256,13 +260,13 @@ const AddEventForm = () => {
                                     )}
 
                                     {online ? (
-                                        <p className="w-fit border rounded-lg py-1 px-5 md:py-2 md:px-4 bg-white border-gray-700 cursor-pointer"
+                                        <p className="w-fit border rounded-lg py-1 px-5 md:py-2 md:px-4 lg:py-4 bg-white border-gray-700 cursor-pointer"
                                             onClick={() => { setOnline(false), setInPerson(false), setFormat("") }}
                                         >
                                             Online
                                         </p>
                                     ) : (
-                                        <p className="w-fit border rounded-lg py-1 px-5 md:py-2 md:px-4 shadow-inner bg-gray-100 cursor-pointer"
+                                        <p className="w-fit border rounded-lg py-1 px-5 md:py-2 md:px-4 lg:py-4 shadow-inner bg-gray-100 cursor-pointer"
                                             onClick={handleSetOnlineTrue}
                                         >
                                             Online
@@ -280,7 +284,7 @@ const AddEventForm = () => {
                                         Address*
                                     </label>
                                     <input
-                                        className="w-full border rounded-lg py-1 px-2 md:py-2 md:px-4 shadow-inner bg-gray-100 focus:bg-white"
+                                        className="w-full border rounded-lg py-1 px-2 md:py-2 md:px-4 lg:py-4 shadow-inner bg-gray-100 focus:bg-white"
                                         id="addressLine1"
                                         name="addressLine1"
                                         type="text"
@@ -289,7 +293,7 @@ const AddEventForm = () => {
                                         required
                                     />
                                     <input
-                                        className="w-full border rounded-lg py-1 px-2 md:py-2 md:px-4 shadow-inner bg-gray-100 focus:bg-white"
+                                        className="w-full border rounded-lg py-1 px-2 md:py-2 md:px-4 lg:py-4 shadow-inner bg-gray-100 focus:bg-white"
                                         id="addressLine2"
                                         name="addressLine2"
                                         type="text"
@@ -298,7 +302,7 @@ const AddEventForm = () => {
                                     />
                                     <div className="flex flex-row gap-6 md:gap-10">
                                         <input
-                                            className="w-1/2 border rounded-lg py-1 px-2 md:py-2 md:px-4 shadow-inner bg-gray-100 focus:bg-white"
+                                            className="w-1/2 border rounded-lg py-1 px-2 md:py-2 md:px-4 lg:py-4 shadow-inner bg-gray-100 focus:bg-white"
                                             id="city"
                                             name="city"
                                             type="text"
@@ -307,7 +311,7 @@ const AddEventForm = () => {
                                             required
                                         />
                                         <input
-                                            className="w-1/2 border rounded-lg py-1 px-2 md:py-2 md:px-4 shadow-inner bg-gray-100 focus:bg-white"
+                                            className="w-1/2 border rounded-lg py-1 px-2 md:py-2 md:px-4 lg:py-4 shadow-inner bg-gray-100 focus:bg-white"
                                             id="postcode"
                                             name="postcode"
                                             type="text"
@@ -320,7 +324,7 @@ const AddEventForm = () => {
                             }
                         </div>
 
-                        <div className="flex flex-col gap-2">
+                        <div className="flex flex-col gap-2 lg:gap-4">
                             <label
                                 htmlFor="eventURL"
                                 className="font-medium text-gray-500"
@@ -328,7 +332,7 @@ const AddEventForm = () => {
                                 Link to event details or registration*
                             </label>
                             <input
-                                className="w-full border rounded-lg py-1 px-2 md:py-2 md:px-4 shadow-inner bg-gray-100 focus:bg-white"
+                                className="w-full border rounded-lg py-1 px-2 md:py-2 md:px-4 lg:py-4 shadow-inner bg-gray-100 focus:bg-white"
                                 id="eventURL"
                                 name="eventURL"
                                 type="url"
@@ -337,18 +341,18 @@ const AddEventForm = () => {
                                 required
                             />
                         </div>
-                        <div className="flex flex-col gap-2">
+                        <div className="flex flex-col gap-2 lg:gap-4">
                             <label
                                 htmlFor="price"
                                 className="font-medium text-gray-500"
                             >
                                 Price*
                             </label>
-                            <div className="flex flex-row items-center gap-2">
-                                <div className="flex flex-row items-center gap-2">
+                            <div className="flex flex-row items-center gap-2 lg:gap-4">
+                                <div className="flex flex-row items-center gap-2 lg:gap-4">
                                     <p className="text-lg px-1 font-medium text-gray-500">£</p>
                                     <input
-                                        className="w-4/5 border rounded-lg py-1 px-2 md:py-2 md:px-4 shadow-inner bg-gray-100 focus:bg-white"
+                                        className="w-4/5 border rounded-lg py-1 px-2 md:py-2 md:px-4 lg:py-4 shadow-inner bg-gray-100 focus:bg-white"
                                         id="price"
                                         name="price"
                                         type="number"

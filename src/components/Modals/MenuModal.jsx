@@ -2,8 +2,9 @@ import { menuModalState } from "../../atoms/menuModal";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { userState } from "../../atoms/userAtom";
 import { useRouter } from "next/router";
-import Link from "next/link";
 import { authModalState } from "@/atoms/authModal";
+import { useState } from "react";
+import Link from "next/link";
 
 const MenuModal = () => {
     const router = useRouter();
@@ -12,7 +13,11 @@ const MenuModal = () => {
     const [userStateValue, setUserStateValue] = useRecoilState(userState);
 
     const handleLogIn = async (e) => {
-        setAuthModal({ open: true });
+        setAuthModal({
+            open: true,
+            toAdd: false,
+        });
+        setMenuModal({ open: false });
     }
 
     const handleSignUp = () => {

@@ -1,12 +1,12 @@
 import { useState } from "react";
-import { authModalState } from "../../atoms/authModal"
 import { useRecoilState, useSetRecoilState } from "recoil";
+import { authModalState } from "../../atoms/authModal"
 import { userState } from "../../atoms/userAtom";
 import { useRouter } from "next/router";
+import { menuModalState } from "@/atoms/menuModal";
 import axios from "axios";
 import emailjs from "@emailjs/browser";
 import Spinner from "../Loader/Spinner";
-import { menuModalState } from "@/atoms/menuModal";
 
 const AuthModal = () => {
     const router = useRouter();
@@ -22,6 +22,11 @@ const AuthModal = () => {
     const [forgotPasswordError, setForgotPasswordError] = useState("");
     const [emailSent, setEmailSent] = useState(false);
     const [loading, setLoading] = useState(false);
+
+    const validateEmail = (email) => {
+        let regex = /\S+@\S+\.\S+/;
+        return regex.test(email);
+    }
 
     const handleClose = () => {
         setModalState(prev => ({
@@ -62,11 +67,11 @@ const AuthModal = () => {
     const checkErrors = () => {
         const { email, password } = user;
 
-        if (email.length < 8) setLogInErrorMsg("Please enter valid email address");
+        if (!validateEmail(email)) setLogInErrorMsg("Please enter valid email address");
 
-        if (password.length < 8) setLogInErrorMsg("Please enter password of at least 8 characters in length");
+        if (password.length < 1) setLogInErrorMsg("Please enter a password to continue");
 
-        if (email.length < 8 && password.length < 8) {
+        if (!validateEmail(email) && password.length < 1) {
             setLogInErrorMsg("Please enter valid email address and password to continue")
         }
     }
@@ -78,7 +83,7 @@ const AuthModal = () => {
 
         checkErrors();
 
-        if (email.length >= 8 && password.length >= 8) {
+        if (validateEmail(email) && password.length >= 1) {
 
             setLogInErrorMsg("");
 
@@ -108,7 +113,9 @@ const AuthModal = () => {
                 setMenuModal({
                     open: false
                 })
-                // router.push("/add-event")
+                if (modalState.toAdd) {
+                    router.push("/add-event")
+                }
             }
         }
     }
@@ -240,8 +247,8 @@ const AuthModal = () => {
                                         </>
                                     ) : (
                                         <>
-                                            <div className="flex flex-row items-center justify-between mx-4 px-4 py-10 border-b">
-                                                <p className="text-2xl lg:text-3xl font-semibold text-gray-500 tracking-wider">Log In</p>
+                                            <div className="flex flex-row items-center justify-between mx-4 px-4 pt-8 pb-6 lg:py-10 border-b">
+                                                <p className="text-xl lg:text-2xl font-semibold text-gray-500 tracking-wider">Log In</p>
                                                 <div
                                                     className="cursor-pointer"
                                                     onClick={handleClose}
@@ -249,17 +256,17 @@ const AuthModal = () => {
                                                     <p className="text-2xl text-gray-400 font-bold pr-4 hover:text-amber-500">✕</p>
                                                 </div>
                                             </div>
-                                            <form className="py-6 px-10">
-                                                <div className="w-full mx-auto flex flex-col gap-6 py-10">
+                                            <form className="pb-4 lg:pb-6 px-8 md:px-10">
+                                                <div className="w-full mx-auto flex flex-col gap-6 py-10 lg:py-12">
                                                     <div className="w-full flex flex-col gap-2">
                                                         <label
                                                             htmlFor="email"
-                                                            className="text-gray-600 font-bold uppercase tracking-wide"
+                                                            className="text-gray-600 font-bold uppercase text-sm lg:text-base tracking-wide"
                                                         >
                                                             Email Address
                                                         </label>
                                                         <input
-                                                            className="w-full bg-gray-200 text-gray-600 md:text-lg border border-gray-200 p-4 leading-tight rounded-lg appearance-none focus:bg-white focus:border-gray-500"
+                                                            className="w-full bg-gray-200 text-gray-600 md:text-lg border border-gray-200 p-3 lg:p-4 leading-tight rounded-lg appearance-none focus:bg-white focus:border-gray-500"
                                                             id="email"
                                                             name="email"
                                                             type="text"
@@ -272,12 +279,12 @@ const AuthModal = () => {
                                                     <div className="w-full flex flex-col gap-2">
                                                         <label
                                                             htmlFor="password"
-                                                            className="text-gray-600 font-bold uppercase tracking-wide mb-2"
+                                                            className="text-gray-600 font-bold uppercase text-sm lg:text-base tracking-wide mb-2"
                                                         >
                                                             Password
                                                         </label>
                                                         <input
-                                                            className="w-full bg-gray-200 text-gray-600 md:text-lg border border-gray-200 p-4 leading-tight rounded-lg appearance-none focus:bg-white focus:border-gray-500"
+                                                            className="w-full bg-gray-200 text-gray-600 md:text-lg border border-gray-200 p-3 lg:p-4 leading-tight rounded-lg appearance-none focus:bg-white focus:border-gray-500"
                                                             id="password"
                                                             name="password"
                                                             type="password"
@@ -287,27 +294,27 @@ const AuthModal = () => {
                                                             required
                                                         />
                                                     </div>
+                                                    <p className="pl-1 -mt-2 border-gray-400 text-sm lg:text-base text-gray-500 tracking-wide cursor-pointer hover:text-gray-700"
+                                                        onClick={handleForgotPassword}
+                                                    >
+                                                        Forgot password?
+                                                    </p>
                                                 </div>
-                                                {logInErrorMsg && <p className="text-center text-red-500 pb-6">{logInErrorMsg}</p>}
-                                                <div className="flex flex-col items-center justify-center pt-10 pb-6 px-1 border-t boder-slate-200">
+                                                {logInErrorMsg && <p className="text-center text-red-500 pb-6 -mt-4 lg:px-4">{logInErrorMsg}</p>}
+                                                <div className="flex flex-col items-center justify-center pt-8 pb-6 md:pb-4 px-1 border-t boder-slate-200 text-sm lg:text-base">
                                                     <button
                                                         className="mx-auto bg-violet-400 text-white font-bold uppercase px-8 py-3 rounded-lg shadow hover:shadow-lg hover:opacity-90 outline-none tracking-wide ease-linear transition-all duration-150"
                                                         onClick={handleLogIn}
                                                     >
                                                         Log In
                                                     </button>
-                                                    <p
-                                                        className="text-violet-600 tracking-wide text-center pt-8 cursor-pointer hover:underline underline-offset-4 decoration-2 decoration-violet-500"
+
+                                                    <p className="text-violet-600 tracking-wide text-center pt-5 cursor-pointer hover:underline underline-offset-4 decoration-2 decoration-violet-500"
                                                         onClick={handleSignUp}
                                                     >
                                                         Sign Up
                                                     </p>
-                                                    <p
-                                                        className="text-gray-500 tracking-wide text-center pt-2 cursor-pointer hover:text-gray-700"
-                                                        onClick={handleForgotPassword}
-                                                    >
-                                                        Forgot password
-                                                    </p>
+
                                                 </div>
                                             </form>
                                         </>

@@ -6,11 +6,10 @@ import { BsPencilSquare, BsShareFill, BsTrash } from "react-icons/bs";
 import { MdOutlineDeleteSweep } from "react-icons/md";
 import { useRouter } from "next/router";
 import axios from "axios";
-import Link from "next/link";
 import ReportModal from "@/components/Modals/ReportModal";
 import Spinner from "@/components/Loader/Spinner";
 
-const EventsCard = ({ id, organisationName, eventName, description, format, addressLine1, addressLine2, city, postcode, eventDate, startTime, endTime, price, eventURL }) => {
+const EventsCard = ({ id, organisationName, organiserWebsite, eventName, description, format, addressLine1, addressLine2, city, postcode, eventDate, startTime, endTime, price, eventURL }) => {
 
     const router = useRouter();
     const [userStateValue, setUserStateValue] = useRecoilState(userState);
@@ -18,6 +17,21 @@ const EventsCard = ({ id, organisationName, eventName, description, format, addr
     const [shareSuccess, setShareSuccess] = useState(false);
     const [confirmDelete, setConfirmDelete] = useState(false);
     const [deleteLoading, setDeleteLoading] = useState(false);
+
+    // const validateProtocol = (siteURL) => {
+    //     let regex = /(http(s?)):\/\//i;
+    //     return regex.test(siteURL);
+    // }
+
+    const validateProtocol = (string) => {
+        let url;
+        try {
+            url = new URL(string);
+        } catch (_) {
+            return false;
+        }
+        return url.protocol;
+    }
 
     const date = new Date(eventDate).toLocaleDateString("en-UK", { day: "numeric", month: "long", year: "numeric" })
 
@@ -141,6 +155,7 @@ const EventsCard = ({ id, organisationName, eventName, description, format, addr
                             )}
 
                         </div>
+
                         {openModal &&
                             <p className="pb-2 md:pt-4 md:pb-8">{capitalise(description)}</p>
                         }
@@ -164,13 +179,31 @@ const EventsCard = ({ id, organisationName, eventName, description, format, addr
                             <div className="flex flex-col gap-1 md:text-xl">
                                 <p>{startTime}-{endTime}</p>
                                 <p>{date}</p>
-                                <p>{titleCap(organisationName)}</p>
+
+                                {validateProtocol(organiserWebsite) ? (
+                                    <a href={organiserWebsite} target="_blank" rel="noopener noreferrer" className="hover:underline">
+                                        <p>{titleCap(organisationName)}</p>
+                                    </a>
+                                ) : (
+                                    <a href={`https://${organiserWebsite}`} target="_blank" rel="noopener noreferrer" className="hover:underline">
+                                        <p>{titleCap(organisationName)}</p>
+                                    </a>
+                                )}
+
                             </div>
                         </div>
                     </div>
-                    <Link href={eventURL} target="_blank" rel="noopener noreferrer" className="hover:underline hover:underline-offset-2 md:hover:underline-offset-4 hover:decoration-indigo-400">
-                        <p className="text-center text-slate-900 py-2 md:py-4 break-all">{eventURL}</p>
-                    </Link>
+
+                    {validateProtocol(eventURL) ? (
+                        <a href={eventURL} target="_blank" rel="noopener noreferrer" className="hover:underline hover:underline-offset-2 md:hover:underline-offset-4 hover:decoration-indigo-400">
+                            <p className="text-center text-slate-900 py-2 md:py-4 break-all">{eventURL}</p>
+                        </a>
+                    ) : (
+                        <a href={`https://${eventURL}`} target="_blank" rel="noopener noreferrer" className="hover:underline hover:underline-offset-2 md:hover:underline-offset-4 hover:decoration-indigo-400">
+                            <p className="text-center text-slate-900 py-2 md:py-4 break-all">{eventURL}</p>
+                        </a>
+                    )}
+
                     <div className="pt-4 text-gray-400 cursor-pointer">
                         {userStateValue.name && userStateValue.name === organisationName ? (
                             <div className="flex flex-row items-center justify-between">

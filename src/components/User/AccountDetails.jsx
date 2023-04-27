@@ -191,7 +191,7 @@ const AccountDetails = () => {
                                     )}
                                 </>
                             )}
-
+                            {forgotPasswordError && <p className="text-red-500 pt-1.5">{forgotPasswordError}</p>}
                         </div>
                         <div className="w-full mx-auto flex flex-col justify-center">
                             <p

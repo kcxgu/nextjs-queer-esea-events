@@ -6,6 +6,10 @@ const eventsSchema = new Schema({
         required: true,
         trim: true,
     },
+    organiserWebsite: {
+        type: String,
+        trim: true,
+    },
     eventName: {
         type: String,
         required: true,

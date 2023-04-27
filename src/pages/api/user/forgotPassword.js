@@ -8,7 +8,7 @@ export default async function forgotPassword(req, res) {
         console.log("Connected to MongoDB, forgotPassword")
 
         const { email } = req.body;
-        const user = await UserModel.findOne({ email });
+        const user = await UserModel.findOne({ email: email });
 
         if (user) {
             return res.send({

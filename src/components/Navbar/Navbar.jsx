@@ -9,6 +9,7 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import AuthModal from "../Modals/AuthModal";
 import MenuModal from "../Modals/MenuModal";
+import { useState } from "react";
 
 const Navbar = () => {
     const router = useRouter();
@@ -20,6 +21,7 @@ const Navbar = () => {
         if (!userStateValue.name) {
             setAuthModalState({
                 open: true,
+                toAdd: true,
             });
         } else {
             router.push("/add-event")
@@ -50,7 +52,7 @@ const Navbar = () => {
             <AuthModal />
             <div className="w-full px-6 sm:px-10 py-4 md:py-6 border-b border-gray-200">
                 <div className="max-w-7xl flex flex-row items-center justify-between mx-auto">
-                    <Link href="/" onClick={() => setMenuModal({ open: false })}>
+                    <Link href="/" onClick={handleCloseMenuModal}>
                         <p className="tracking-wide text-lg font-medium md:text-xl">Hey Queer Asians</p>
                     </Link>
                     <div className="relative">

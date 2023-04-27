@@ -9,7 +9,7 @@ export default async function login(req, res) {
 
         const { email, password } = req.body;
 
-        const user = await UserModel.findOne({ email })
+        const user = await UserModel.findOne({ email: email })
         if (user) {
             user.comparePassword(password, function (matchError, isMatch) {
                 if (matchError) {
@@ -26,7 +26,6 @@ export default async function login(req, res) {
                     })
                 }
             })
-            res.status(201)
         } else {
             return res.send({ message: "Incorrect email or password" })
         }

@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 const Privacy = () => {
     return (
         <>
@@ -46,7 +48,7 @@ const Privacy = () => {
                         </div>
                         <div className="text-lg md:text-xl leading-relaxed flex flex-col gap-4 text-gray-600 py-4 tracking-wider">
                             <h3 className="font-medium text-gray-900">Children's information</h3>
-                            <p>Our platform is not directed to children under the age of 16, and we do not knowingly collect personal data from such children. If you become aware that a child under the age of 16 has provided us with their personal data, please contact us at <span className="text-violet-600 underline underline-offset-2 decoration-violet-500 hover:opacity-80 cursor-pointer">baqc.esea@gmail.com</span>.</p>
+                            <p>Our platform is not directed to children under the age of 16, and we do not knowingly collect personal data from such children. If you become aware that a child under the age of 16 has provided us with their personal data, please <Link href="https://forms.gle/iGrrnA5tLXuEHjFR7" target="_blank" rel="noopener noreferrer" className="text-violet-600 underline underline-offset-2 decoration-violet-500 hover:opacity-80 cursor-pointer">contact us</Link>.</p>
                         </div>
                         <div className="text-lg md:text-xl leading-relaxed flex flex-col gap-4 text-gray-600 py-4 tracking-wider">
                             <h3 className="font-medium text-gray-900">Changes to this policy</h3>
@@ -55,7 +57,7 @@ const Privacy = () => {
                         </div>
                         <div className="text-lg md:text-xl leading-relaxed flex flex-col gap-4 text-gray-600 py-4 tracking-wider">
                             <h3 className="font-medium text-gray-900">Contact us</h3>
-                            <p>We aim to make this information as clear and transparent as possible. But if you still have questions about how we process your personal data, or would like to exercise your rights under our policy, please contact us at <span className="text-violet-600 underline underline-offset-2 decoration-violet-500 hover:opacity-80 cursor-pointer">baqc.esea@gmail.com</span>.</p>
+                            <p>We aim to make this information as clear and transparent as possible. But if you still have questions about how we process your personal data, or would like to exercise your rights under our policy, please <Link href="https://forms.gle/iGrrnA5tLXuEHjFR7" target="_blank" rel="noopener noreferrer" className="text-violet-600 underline underline-offset-2 decoration-violet-500 hover:opacity-80 cursor-pointer">contact us</Link>.</p>
                         </div>
                     </div>
                 </div>

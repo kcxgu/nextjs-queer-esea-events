@@ -29,11 +29,6 @@ const EditEventForm = () => {
     const [serverError, setServerError] = useState(false);
     const [updateLoading, setUpdateLoading] = useState(false);
 
-    const isValidUrl = (urlString) => {
-        var regex = new RegExp("^(http[s]?:\\/\\/(www\\.)?|ftp:\\/\\/(www\\.)?|www\\.){1}([0-9A-Za-z-\\.@:%_\+~#=]+)+((\\.[a-zA-Z]{2,3})+)(/(.)*)?(\\?(.)*)?");
-        return regex.test(urlString);
-    }
-
     const handleInput = (e) => {
         const { name, value } = e.target;
         setEventInput({
@@ -94,7 +89,7 @@ const EditEventForm = () => {
     const checkErrors = async () => {
         const { eventName, description, eventDate, startTime, endTime, eventURL } = eventInput;
 
-        if (!isValidUrl(eventURL)) setAddEventErrorMsg("Please ensure you have entered a valid event details URL");
+        if (eventURL.length < 1) setAddEventErrorMsg("Please enter an event URL");
 
         if (format === "") setAddEventErrorMsg("Please ensure you have selected a format");
 
@@ -129,13 +124,14 @@ const EditEventForm = () => {
 
         const { eventName, description, eventDate, startTime, endTime, addressLine1, addressLine2, city, postcode, eventURL, price } = eventInput;
 
-        if (eventName.length >= 1 && description.length >= 1 && eventDate && startTime && endTime && format !== "" && isValidUrl(eventURL)) {
+        if (eventName.length >= 1 && description.length >= 1 && eventDate && startTime && endTime && format !== "" && eventURL.length >= 1) {
             setUpdateLoading(true);
             setAddEventErrorMsg("");
 
             const date = new Date(eventDate).toISOString();
             const event = {
                 organisationName: userStateValue.name,
+                organiserWebsite: userStateValue.organiserWebsite,
                 eventName: eventName,
                 description: description,
                 eventDate: date,
@@ -187,10 +183,10 @@ const EditEventForm = () => {
                 <>
                     <div>
                         <h1 className="text-center text-xl md:text-2xl lg:text-3xl font-medium tracking-wider">Hey {userStateValue.name}</h1>
-                        <h1 className="text-center text-3xl md:text-4xl lg:text-5xl font-medium tracking-wider pt-6 pb-12">Edit your event</h1>
+                        <h1 className="text-center text-3xl md:text-4xl lg:text-5xl font-medium tracking-wider pt-6 pb-12 md:pb-16 lg:pb-20">Edit your event</h1>
                     </div>
-                    <form className="w-11/12 md:w-4/5 lg:w-2/3 mx-auto flex flex-col gap-6 md:gap-8 bg-white text-gray-700 py-6 md:py-14 px-8 md:px-12 rounded-xl text-lg shadow-lg">
-                        <div className="flex flex-col gap-2">
+                    <form className="w-11/12 md:w-4/5 lg:w-2/3 mx-auto flex flex-col gap-6 md:gap-8 bg-white text-gray-700 py-6 md:py-14 px-8 md:px-12 border-t rounded-xl text-lg lg:text-xl shadow-lg">
+                        <div className="flex flex-col gap-2 lg:gap-4">
                             <label
                                 htmlFor="eventName"
                                 className="font-medium text-gray-500"
@@ -198,17 +194,18 @@ const EditEventForm = () => {
                                 Event Name*
                             </label>
                             <input
-                                className="w-full border rounded-lg py-1 px-2 md:py-2 md:px-4 shadow-inner bg-gray-100 focus:bg-white"
+                                className="w-full border rounded-lg py-1 px-2 md:py-2 lg:py-4 md:px-4 shadow-inner bg-gray-100 focus:bg-white"
                                 id="eventName"
                                 name="eventName"
                                 type="text"
                                 placeholder="A Queer Event"
+                                spellCheck="true"
                                 value={eventInput.eventName}
                                 onChange={handleInput}
                                 required
                             />
                         </div>
-                        <div className="flex flex-col gap-2">
+                        <div className="flex flex-col gap-2 lg:gap-4">
                             <label
                                 htmlFor="description"
                                 className="font-medium text-gray-500"
@@ -216,17 +213,18 @@ const EditEventForm = () => {
                                 Brief Description*
                             </label>
                             <textarea
-                                className="w-full border rounded-lg py-1 px-2 md:py-2 md:px-4 shadow-inner bg-gray-100 focus:bg-white"
+                                className="w-full border rounded-lg py-1 px-2 md:py-2 lg:py-4 md:px-4 shadow-inner bg-gray-100 focus:bg-white"
                                 id="description"
                                 name="description"
                                 rows={5}
                                 placeholder="A brief but queer description"
+                                spellCheck="true"
                                 value={eventInput.description}
                                 onChange={handleInput}
                                 required
                             />
                         </div>
-                        <div className="flex flex-col gap-2">
+                        <div className="flex flex-col gap-2 lg:gap-4">
                             <label
                                 htmlFor="eventDate"
                                 className="font-medium text-gray-500"
@@ -234,7 +232,7 @@ const EditEventForm = () => {
                                 Date of Event*
                             </label>
                             <input
-                                className="w-full border rounded-lg py-1 px-2 md:py-2 md:px-4 shadow-inner bg-gray-100 focus:bg-white"
+                                className="w-full border rounded-lg py-1 px-2 md:py-2 lg:py-4 md:px-4 shadow-inner bg-gray-100 focus:bg-white"
                                 id="eventDate"
                                 name="eventDate"
                                 type="date"
@@ -244,7 +242,7 @@ const EditEventForm = () => {
                             />
                         </div>
                         <div className="flex flex-row items-center justify-between gap-10">
-                            <div className="w-1/2 flex flex-col gap-2">
+                            <div className="w-1/2 flex flex-col gap-2 lg:gap-4">
                                 <label
                                     htmlFor="startTime"
                                     className="font-medium text-gray-500"
@@ -252,7 +250,7 @@ const EditEventForm = () => {
                                     Start Time*
                                 </label>
                                 <input
-                                    className="w-full border rounded-lg py-1 px-2 md:py-2 md:px-4 shadow-inner bg-gray-100 focus:bg-white"
+                                    className="w-full border rounded-lg py-1 px-2 md:py-2 lg:py-4 md:px-4 shadow-inner bg-gray-100 focus:bg-white"
                                     id="startTime"
                                     name="startTime"
                                     type="time"
@@ -261,7 +259,7 @@ const EditEventForm = () => {
                                     required
                                 />
                             </div>
-                            <div className="w-1/2 flex flex-col gap-2">
+                            <div className="w-1/2 flex flex-col gap-2 lg:gap-4">
                                 <label
                                     htmlFor="endTime"
                                     className="font-medium text-gray-500"
@@ -269,7 +267,7 @@ const EditEventForm = () => {
                                     End Time*
                                 </label>
                                 <input
-                                    className="w-full border rounded-lg py-1 px-2 md:py-2 md:px-4 shadow-inner bg-gray-100 focus:bg-white"
+                                    className="w-full border rounded-lg py-1 px-2 md:py-2 lg:py-4 md:px-4 shadow-inner bg-gray-100 focus:bg-white"
                                     id="endTime"
                                     name="endTime"
                                     type="time"
@@ -324,7 +322,7 @@ const EditEventForm = () => {
                                         Address*
                                     </label>
                                     <input
-                                        className="w-full border rounded-lg py-1 px-2 md:py-2 md:px-4 shadow-inner bg-gray-100 focus:bg-white"
+                                        className="w-full border rounded-lg py-1 px-2 md:py-2 lg:py-4 md:px-4 shadow-inner bg-gray-100 focus:bg-white"
                                         id="addressLine1"
                                         name="addressLine1"
                                         type="text"
@@ -334,7 +332,7 @@ const EditEventForm = () => {
                                         required
                                     />
                                     <input
-                                        className="w-full border rounded-lg py-1 px-2 md:py-2 md:px-4 shadow-inner bg-gray-100 focus:bg-white"
+                                        className="w-full border rounded-lg py-1 px-2 md:py-2 lg:py-4 md:px-4 shadow-inner bg-gray-100 focus:bg-white"
                                         id="addressLine2"
                                         name="addressLine2"
                                         type="text"
@@ -344,7 +342,7 @@ const EditEventForm = () => {
                                     />
                                     <div className="flex flex-row gap-6 md:gap-10">
                                         <input
-                                            className="w-1/2 border rounded-lg py-1 px-2 md:py-2 md:px-4 shadow-inner bg-gray-100 focus:bg-white"
+                                            className="w-1/2 border rounded-lg py-1 px-2 md:py-2 lg:py-4 md:px-4 shadow-inner bg-gray-100 focus:bg-white"
                                             id="city"
                                             name="city"
                                             type="text"
@@ -354,7 +352,7 @@ const EditEventForm = () => {
                                             required
                                         />
                                         <input
-                                            className="w-1/2 border rounded-lg py-1 px-2 md:py-2 md:px-4 shadow-inner bg-gray-100 focus:bg-white"
+                                            className="w-1/2 border rounded-lg py-1 px-2 md:py-2 lg:py-4 md:px-4 shadow-inner bg-gray-100 focus:bg-white"
                                             id="postcode"
                                             name="postcode"
                                             type="text"
@@ -368,7 +366,7 @@ const EditEventForm = () => {
                             }
                         </div>
 
-                        <div className="flex flex-col gap-2">
+                        <div className="flex flex-col gap-2 lg:gap-4">
                             <label
                                 htmlFor="eventURL"
                                 className="font-medium text-gray-500"
@@ -376,7 +374,7 @@ const EditEventForm = () => {
                                 Link to event details or registration*
                             </label>
                             <input
-                                className="w-full border rounded-lg py-1 px-2 md:py-2 md:px-4 shadow-inner bg-gray-100 focus:bg-white"
+                                className="w-full border rounded-lg py-1 px-2 md:py-2 lg:py-4 md:px-4 shadow-inner bg-gray-100 focus:bg-white"
                                 id="eventURL"
                                 name="eventURL"
                                 type="url"
@@ -386,7 +384,7 @@ const EditEventForm = () => {
                                 required
                             />
                         </div>
-                        <div className="flex flex-col gap-2">
+                        <div className="flex flex-col gap-2 lg:gap-4">
                             <label
                                 htmlFor="price"
                                 className="font-medium text-gray-500"

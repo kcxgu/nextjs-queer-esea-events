@@ -16,7 +16,7 @@ async function addUser(req, res) {
         console.log("Connected to MongoDB, sign up")
 
         const { email } = req.body;
-        const data = await UserModel.findOne({ email })
+        const data = await UserModel.findOne({ email: email })
         if (data) {
             res.send({ message: "Account already exists" });
         } else {

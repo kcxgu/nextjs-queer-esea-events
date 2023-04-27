@@ -21,6 +21,10 @@ const SignUpForm = () => {
     const [userStateValue, setUserStateValue] = useRecoilState(userState);
     const [signUpErrorMsg, setSignUpErrorMsg] = useState("");
 
+    const validateEmail = (email) => {
+        let regex = /\S+@\S+\.\S+/;
+        return regex.test(email);
+    }
 
     const handleInput = (e) => {
         const { name, value } = e.target
@@ -35,11 +39,11 @@ const SignUpForm = () => {
 
         if (name === "") setSignUpErrorMsg("Please enter a name");
 
-        if (email.length < 8) setSignUpErrorMsg("Please enter valid email address");
+        if (!validateEmail(email)) setSignUpErrorMsg("Please enter a valid email address");
 
         if (password.length < 8) setSignUpErrorMsg("Please enter password of at least 8 characters in length");
 
-        if (email.length < 8 && password.length < 8) {
+        if (!validateEmail(email) && password.length < 8) {
             setSignUpErrorMsg("Please enter valid email address and password to continue")
         }
     }
@@ -51,7 +55,7 @@ const SignUpForm = () => {
 
         const { name, website, email, password, twitter, instagram, facebook, discord } = newUser;
 
-        if (name && email.length >= 8 && password.length >= 8) {
+        if (name && validateEmail(email) && password.length >= 8) {
 
             setSignUpErrorMsg("");
 
@@ -82,7 +86,14 @@ const SignUpForm = () => {
                             facebook: facebook,
                             discord: discord,
                         }
-                    })
+                    });
+                    localStorage.setItem("user", JSON.stringify({
+                        id: res.data.id,
+                        name: res.data.name,
+                        email: res.data.email,
+                        website: res.data.website,
+                        socialMedia: res.data.socialMedia
+                    }))
                     router.push("/add-event")
                 } else {
                     setSignUpErrorMsg(res.data.message);
@@ -139,7 +150,7 @@ const SignUpForm = () => {
                                     className="w-full bg-gray-200 text-gray-600 md:text-lg border border-gray-200 p-4 leading-tight rounded-lg appearance-none focus:bg-white focus:border-gray-500"
                                     id="website"
                                     name="website"
-                                    placeholder="baqc-esea.tilda.ws"
+                                    placeholder="https://baqc-esea.tilda.ws"
                                     onChange={handleInput}
                                 />
                             </div>

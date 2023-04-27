@@ -9,10 +9,9 @@ export default async function updateEvent(req, res) {
 
         const { id, updatedEvent } = req.body;
 
-        console.log(updatedEvent)
-
         await EventsModel.updateOne({ _id: id }, {
             organisationName: updatedEvent.organisationName,
+            organiserWebsite: updatedEvent.organiserWebsite,
             eventName: updatedEvent.eventName,
             description: updatedEvent.description,
             eventDate: updatedEvent.eventDate,
