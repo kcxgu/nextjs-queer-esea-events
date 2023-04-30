@@ -57,6 +57,11 @@ const MenuModal = () => {
                                     See Our Guidelines
                                 </li>
                             </Link>
+                            <Link href="/community/forum">
+                                <li className="border-b py-5 text-center font-medium text-lg hover:opacity-50 cursor-pointer" onClick={() => setMenuModal({ open: false })}>
+                                    Join Our Forum
+                                </li>
+                            </Link>
                             <Link href="/community/support-us">
                                 <li className="border-b py-5 text-center font-medium text-lg hover:opacity-50 cursor-pointer" onClick={() => setMenuModal({ open: false })}>
                                     Support Us

@@ -40,7 +40,7 @@ const EventsCard = ({ id, organisationName, organiserWebsite, eventName, descrip
         for (let i = 0; i < capitaliseText.length; i++) {
             capitaliseText[i] = capitaliseText[i][0]?.toUpperCase() + capitaliseText[i].substring(1);
         }
-        const text = capitaliseText.join(" ").trim();
+        const text = capitaliseText.join(" ").trim().toString();
         return text;
     }
 
@@ -130,9 +130,9 @@ const EventsCard = ({ id, organisationName, organiserWebsite, eventName, descrip
                             )}
                         </div>
                     </div>
-                    <div className="text-slate-700 font-medium text-lg py-2 tracking-wide">
+                    <div className="text-slate-700 font-medium text-lg pt-4 pb-2 tracking-wide">
                         <div className="w-full flex flex-col md:flex-row md:items-center md:gap-0.5 justify-between pb-1 md:pb-2">
-                            <p className="text-lg md:text-xl md:mr-4">{titleCap(eventName)}</p>
+                            <p className="text-xl md:text-2xl lg:text-3xl md:mr-4">{titleCap(eventName)}</p>
 
                             {openModal ? (
                                 <>
@@ -157,12 +157,12 @@ const EventsCard = ({ id, organisationName, organiserWebsite, eventName, descrip
                         </div>
 
                         {openModal &&
-                            <p className="pb-2 md:pt-4 md:pb-8 whitespace-pre">{capitalise(description)}</p>
+                            <p className="whitespace-pre-wrap pb-2 md:pt-4 md:pb-8 text-gray-500">{description}</p>
                         }
 
-                        <div className="flex flex-col md:flex-row items-start justify-between">
+                        <div className="flex flex-col md:flex-row items-start justify-between py-3">
                             {format === "In Person" &&
-                                <div className="text-gray-500 pb-2 md:pb-4">
+                                <div className="text-gray-700 pb-2 md:pb-4">
                                     <p>{titleCap(addressLine1)}</p>
                                     {addressLine2 && <p>{titleCap(addressLine2)}</p>}
                                     <p>{capitalise(city)}</p>

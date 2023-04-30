@@ -22,10 +22,10 @@ export default async function reportEmail(req, res) {
     const emailContent = {
         from: NEXT_PUBLIC_EMAIL_USERNAME,
         to: NEXT_PUBLIC_EMAIL_USERNAME,
-        subject: "Queer ESEA Events - Reported Event!",
+        subject: "HeyQueerAsians - Feedback",
         html: `
                 <p><stron>Hey,</strong></p>
-                <p><strong>An event has been reported:</strong></p>
+                <p>Someone got in touch.</p>
                 <p>${message}</p>
         `
     }

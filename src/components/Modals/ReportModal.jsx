@@ -130,7 +130,7 @@ const ReportModal = ({ id, organisationName, eventName, description, eventURL })
                                                     required />
                                             </div>
                                             {errorMsg && <p className="text-center text-red-500 pb-1">{errorMsg}</p>}
-                                            {serverError && <p className="text-center text-red-500">We are experiencing a connection error, try contacting us <Link href="" target="_blank" rel="noopener noreferrer preload"><span className="text-blue-600 underline underline-offset-2 decoration-2 decoration-blue-400 hover:opacity-80">here</span></Link> instead.</p>}
+                                            {serverError && <p className="text-center text-red-500">We are experiencing a connection error, try contacting us <a href="" target="_blank" rel="noopener noreferrer preload"><span className="text-blue-600 underline underline-offset-2 decoration-2 decoration-blue-400 hover:opacity-80">here</span></a> instead.</p>}
                                         </div>
                                         <div className="flex flex-row items-center justify-between pt-6 border-t border-solid border-slate-200">
                                             <button
