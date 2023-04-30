@@ -87,8 +87,6 @@ const AddEventForm = () => {
             setAddEventErrorMsg("");
             setAddLoading(true)
 
-            console.log(userEmails)
-
             const date = new Date(eventDate).toISOString();
             const event = {
                 organisationName: userStateValue.name,

@@ -157,7 +157,7 @@ const EventsCard = ({ id, organisationName, organiserWebsite, eventName, descrip
                         </div>
 
                         {openModal &&
-                            <p className="pb-2 md:pt-4 md:pb-8">{capitalise(description)}</p>
+                            <p className="pb-2 md:pt-4 md:pb-8 whitespace-pre">{capitalise(description)}</p>
                         }
 
                         <div className="flex flex-col md:flex-row items-start justify-between">
