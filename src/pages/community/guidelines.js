@@ -2,7 +2,7 @@ import Head from "next/head"
 
 const guidelines = () => {
     return (
-        <>
+        <div className="bg-white">
             <Head>
                 <title>Hey Queer Asians | Our Guidelines</title>
             </Head>
@@ -34,7 +34,7 @@ const guidelines = () => {
                     </div>
                 </div>
             </div>
-        </>
+        </div>
     )
 }
 

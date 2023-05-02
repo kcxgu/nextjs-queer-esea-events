@@ -18,11 +18,6 @@ const EventsCard = ({ id, organisationName, organiserWebsite, eventName, descrip
     const [confirmDelete, setConfirmDelete] = useState(false);
     const [deleteLoading, setDeleteLoading] = useState(false);
 
-    // const validateProtocol = (siteURL) => {
-    //     let regex = /(http(s?)):\/\//i;
-    //     return regex.test(siteURL);
-    // }
-
     const validateProtocol = (string) => {
         let url;
         try {
@@ -102,7 +97,7 @@ const EventsCard = ({ id, organisationName, organiserWebsite, eventName, descrip
     }
 
     return (
-        <div className="w-full max-w-3xl lg:max-w-4xl px-6 mb-10">
+        <div className="w-full max-w-3xl lg:max-w-4xl px-6 mb-10 lg:pl-12 xl:pl-4">
             <div className="md:flex md:flex-row">
                 <div className="hidden md:block border-r border-gray-300 flex-row items-start mr-10">
                     <div className="text-center text-lg lg:text-xl text-gray-500 px-8">{new Date(eventDate).toLocaleString("default", { weekday: "short", day: "numeric", month: "short" })}</div>
@@ -162,7 +157,7 @@ const EventsCard = ({ id, organisationName, organiserWebsite, eventName, descrip
 
                         <div className="flex flex-col md:flex-row items-start justify-between py-3">
                             {format === "In Person" &&
-                                <div className="text-gray-700 pb-2 md:pb-4">
+                                <div className="md:w-2/3 md:pr-4 text-gray-700 pb-2 md:pb-4">
                                     <p>{titleCap(addressLine1)}</p>
                                     {addressLine2 && <p>{titleCap(addressLine2)}</p>}
                                     <p>{capitalise(city)}</p>
@@ -185,7 +180,7 @@ const EventsCard = ({ id, organisationName, organiserWebsite, eventName, descrip
                                         <p>{titleCap(organisationName)}</p>
                                     </a>
                                 ) : (
-                                    <a href={`https://${organiserWebsite}`} target="_blank" rel="noopener noreferrer" className="hover:underline">
+                                    <a href={`http://${organiserWebsite}`} target="_blank" rel="noopener noreferrer" className="hover:underline">
                                         <p>{titleCap(organisationName)}</p>
                                     </a>
                                 )}
@@ -199,7 +194,7 @@ const EventsCard = ({ id, organisationName, organiserWebsite, eventName, descrip
                             <p className="text-center text-slate-900 py-2 md:py-4 break-all">{eventURL}</p>
                         </a>
                     ) : (
-                        <a href={`https://${eventURL}`} target="_blank" rel="noopener noreferrer" className="hover:underline hover:underline-offset-2 md:hover:underline-offset-4 hover:decoration-indigo-400">
+                        <a href={`http://${eventURL}`} target="_blank" rel="noopener noreferrer" className="hover:underline hover:underline-offset-2 md:hover:underline-offset-4 hover:decoration-indigo-400">
                             <p className="text-center text-slate-900 py-2 md:py-4 break-all">{eventURL}</p>
                         </a>
                     )}

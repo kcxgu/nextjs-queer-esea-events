@@ -48,9 +48,9 @@ const Navbar = () => {
     }
 
     return (
-        <>
+        <div className="">
             <AuthModal />
-            <div className="w-full px-6 sm:px-10 py-4 md:py-6 border-b border-gray-200">
+            <div className="w-full px-6 sm:px-10 py-4 border-b border-gray-100">
                 <div className="max-w-7xl flex flex-row items-center justify-between mx-auto">
                     <Link href="/" onClick={handleCloseMenuModal}>
                         <p className="tracking-wide text-lg font-medium md:text-xl">Hey Queer Asians</p>
@@ -83,7 +83,7 @@ const Navbar = () => {
                     </div>
                 </div>
             </div >
-        </>
+        </div>
     )
 }
 
