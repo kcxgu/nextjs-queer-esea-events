@@ -3,7 +3,6 @@ import { useRecoilState, useSetRecoilState } from "recoil";
 import { userState } from "../../atoms/userAtom";
 import { useRouter } from "next/router";
 import { authModalState } from "@/atoms/authModal";
-import { useState } from "react";
 import Link from "next/link";
 
 const MenuModal = () => {
@@ -39,7 +38,7 @@ const MenuModal = () => {
     return (
         <>
             {menuModal.open &&
-                <ul className="w-32 md:w-48 lg:w-80 absolute top-10 md:top-14 lg:top-16 right-0 flex flex-col bg-white border border-gray-700 rounded-xl tracking-wide lg:tracking-wider">
+                <ul className="w-32 md:w-48 lg:w-80 absolute top-10 md:top-14 lg:top-16 right-0 z-50 flex flex-col bg-white border border-gray-700 rounded-xl tracking-wide lg:tracking-wider">
                     {!userStateValue.name &&
                         <>
                             <li className="rounded-t-xl border-b py-5 text-center font-medium text-lg hover:opacity-50 cursor-pointer"

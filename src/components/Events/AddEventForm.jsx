@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/router";
 import { useRecoilState } from "recoil";
 import { userState } from "../../atoms/userAtom";
@@ -70,11 +70,6 @@ const AddEventForm = () => {
         if (eventName.length < 1) setAddEventErrorMsg("Please ensure you have a clear and descriptive event name");
     }
 
-    const getEmails = async () => {
-        const res = await axios.get("/api/events/notification");
-        setUserEmails(res.data)
-    }
-
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -112,6 +107,19 @@ const AddEventForm = () => {
                 if (res.status === 201) {
                     setAddLoading(false)
 
+                    if (format === "In Person") {
+                        const fetch = await axios.post("/api/events/getEmails", {
+                            country: "UK",
+                            city: eventInput.city.toLowerCase()
+                        })
+                        setUserEmails(fetch.data)
+                    }
+
+                    if (format === "Online") {
+                        const fetch = await axios.get("api/events/notification")
+                        setUserEmails(fetch.data)
+                    }
+
                     if (userEmails) {
                         emailjs.send(
                             process.env.NEXT_PUBLIC_EMAIL_SERVICE_ID,
@@ -137,10 +145,6 @@ const AddEventForm = () => {
             }
         }
     }
-
-    useEffect(() => {
-        getEmails();
-    }, [])
 
     return (
         <div className="max-w-7xl py-16 md:py-20 lg:py-24 md:mx-auto">
@@ -298,7 +302,7 @@ const AddEventForm = () => {
                                         placeholder="Line 2 of Address"
                                         onChange={handleInput}
                                     />
-                                    <div className="flex flex-row gap-6 md:gap-10">
+                                    <div className="flex flex-row items-center gap-6 md:justify-between">
                                         <input
                                             className="w-1/2 border rounded-lg py-1 px-2 md:py-2 md:px-4 lg:py-4 shadow-inner bg-gray-100 focus:bg-white"
                                             id="city"
@@ -317,7 +321,9 @@ const AddEventForm = () => {
                                             onChange={handleInput}
                                             required
                                         />
+                                        <p className="hidden md:block md:w-1/2">United Kingdom</p>
                                     </div>
+                                    <p className="md:hidden text-gray-700 pl-1">United Kingdom</p>
                                 </div>
                             }
                         </div>

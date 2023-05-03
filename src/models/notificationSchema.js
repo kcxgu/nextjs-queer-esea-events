@@ -6,6 +6,15 @@ const notificationsSchema = new Schema({
         required: true,
         trim: true,
     },
+    country: {
+        type: String,
+        required: true,
+        trim: true,
+    },
+    city: {
+        type: String,
+        trim: true,
+    },
 })
 
 const NotificationsModel = models.Notifications || model("Notifications", notificationsSchema);

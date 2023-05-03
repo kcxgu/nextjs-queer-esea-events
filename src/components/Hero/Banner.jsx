@@ -27,7 +27,7 @@ const Banner = ({ setNotificationDropdown }) => {
                 <div className="xl:w-2/3 flex md:flex-row items-start md:py-8 px-10 md:px-0">
                     <div className="flex flex-col xl:flex-row justify-between gap-8 py-6">
                         <div className="xl:w-1/2 md:pl-1 md:pr-14 tracking-wide lg:tracking-wider leading-normal text-gray-700">
-                            <div className="flex flex-row items-center gap-4 mb-2 text-orange-500  text-xl lg:text-2xl cursor-pointer hover:font-medium"
+                            <div className="flex flex-row items-center gap-4 mb-2 text-orange-500 text-xl lg:text-2xl underline underline-offset-2 lg:underline-offset-4 cursor-pointer hover:font-medium"
                                 onClick={scrollToView}
                             >
                                 <FaCalendarCheck />
@@ -36,7 +36,7 @@ const Banner = ({ setNotificationDropdown }) => {
                             <p className="text-lg lg:text-xl">We hope to expand the platform to serve queer Asians everywhere soon</p>
                         </div>
                         <div className="md:pl-1 md:pr-14 lg:text-xl tracking-wide lg:tracking-wider leading-normal text-gray-700">
-                            <div className="flex flex-row items-center gap-4 mb-2 text-violet-600 text-xl lg:text-2xl cursor-pointer hover:font-medium"
+                            <div className="flex flex-row items-center gap-4 mb-2 text-violet-600 text-xl lg:text-2xl underline underline-offset-2 lg:underline-offset-4 cursor-pointer hover:font-medium"
                                 onClick={handleOpenNotification}
                             >
                                 <FaBell />
