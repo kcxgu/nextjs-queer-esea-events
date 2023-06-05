@@ -23,7 +23,7 @@ const SupportUs = () => {
     return (
         <>
             <Head>
-                <title>Hey Queer Asians | Support Us</title>
+                <title>Support Us - Hey Queer Asians</title>
                 <meta
                     name="description"
                     content="Support us to keep Hey Queer Asians going."

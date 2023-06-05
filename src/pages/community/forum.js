@@ -1,6 +1,7 @@
 import { useState } from "react"
 import Spinner from "@/components/Loader/Spinner";
 import axios from "axios"
+import Head from "next/head";
 
 const Forum = () => {
     const [email, setEmail] = useState("");
@@ -51,6 +52,9 @@ const Forum = () => {
 
     return (
         <div style={{ backgroundColor: "#FEF9F6" }} className="w-full mx-auto">
+            <Head>
+                <title>Our Forum - Hey Queer Asians</title>
+            </Head>
             <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-start justify-evenly md:gap-10 py-20 px-8">
                 <div className="flex flex-col gap-6 md:w-5/6 lg:pr-20">
                     <h1 className="text-4xl lg:text-5xl font-medium tracking-wide leading-normal lg:leading-normal">Welcome To Our Community Forum!</h1>

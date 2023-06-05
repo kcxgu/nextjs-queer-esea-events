@@ -31,6 +31,7 @@ const Navbar = () => {
     const handleOpenMenuModal = () => {
         setMenuModal({ open: true })
     }
+
     const handleCloseMenuModal = () => {
         setMenuModal({ open: false })
     }
@@ -56,15 +57,15 @@ const Navbar = () => {
                     </Link>
                     <div className="relative">
                         <div className="flex flex-row items-center gap-3 lg:gap-4 cursor-pointer">
+                            <Link href="/our-stories" className="hidden lg:block tracking-wide lg:text-lg">Our Stories</Link>
                             {userStateValue.name ? (
-                                <>
-                                    <div className="hover:opacity-70" onClick={handleUser}>
-                                        <FaUserCircle className="text-2xl lg:text-3xl" />
-                                    </div>
-                                </>
+                                <div className="hover:opacity-70" onClick={handleUser}>
+                                    <FaUserCircle className="text-2xl lg:text-3xl" />
+                                </div>
                             ) : (
                                 <>
-                                    <div className="bg-white rounded-full p-3 hover:bg-indigo-400 hover:text-white text-xl lg:text-3xl"
+                                    <div
+                                        className="bg-white rounded-full p-3 hover:bg-indigo-400 hover:text-white text-xl lg:text-3xl"
                                         onClick={handleAddEvent}
                                     >
                                         <MdAdd />

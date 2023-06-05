@@ -34,6 +34,17 @@ const MenuModal = () => {
         setMenuModal({ open: false });
     }
 
+    const handleAddEvent = () => {
+        if (!userStateValue.name) {
+            setAuthModal({
+                open: true,
+                toAdd: true,
+            });
+        } else {
+            router.push("/add-event")
+        }
+        setMenuModal({ open: false })
+    }
 
     return (
         <>
@@ -51,42 +62,39 @@ const MenuModal = () => {
                             >
                                 Sign Up
                             </li>
-                            <Link href="/community/guidelines">
-                                <li className="border-b py-5 text-center font-medium text-lg hover:opacity-50 cursor-pointer" onClick={() => setMenuModal({ open: false })}>
-                                    See Our Guidelines
-                                </li>
-                            </Link>
-                            <Link href="/community/forum">
-                                <li className="border-b py-5 text-center font-medium text-lg hover:opacity-50 cursor-pointer" onClick={() => setMenuModal({ open: false })}>
-                                    Join Our Forum
-                                </li>
-                            </Link>
-                            <Link href="/community/support-us">
-                                <li className="border-b py-5 text-center font-medium text-lg hover:opacity-50 cursor-pointer" onClick={() => setMenuModal({ open: false })}>
-                                    Support Us
-                                </li>
-                            </Link>
                         </>
                     }
-
+                    <Link href="/add-event">
+                        <li className="border-b py-5 text-center font-medium text-lg hover:opacity-50 cursor-pointer" onClick={handleAddEvent}>
+                            Add Event
+                        </li>
+                    </Link>
+                    <Link href="/our-stories" className="tracking-wide lg:text-lg">
+                        <li className="border-b py-5 text-center font-medium text-lg hover:opacity-50 cursor-pointer" onClick={() => setMenuModal({ open: false })}>
+                            Read Our Stories
+                        </li>
+                    </Link>
+                    <Link href="/community/guidelines">
+                        <li className="border-b py-5 text-center font-medium text-lg hover:opacity-50 cursor-pointer" onClick={() => setMenuModal({ open: false })}>
+                            See Our Guidelines
+                        </li>
+                    </Link>
+                    <Link href="/community/forum">
+                        <li className="border-b py-5 text-center font-medium text-lg hover:opacity-50 cursor-pointer" onClick={() => setMenuModal({ open: false })}>
+                            Join Our Forum
+                        </li>
+                    </Link>
+                    <Link href="/community/support-us">
+                        <li className="border-b py-5 text-center font-medium text-lg hover:opacity-50 cursor-pointer" onClick={() => setMenuModal({ open: false })}>
+                            Support Us
+                        </li>
+                    </Link>
                     {userStateValue.name &&
-                        <>
-                            <Link href="/add-event">
-                                <li className="border-b py-5 text-center font-medium text-lg hover:opacity-50 cursor-pointer" onClick={() => setMenuModal({ open: false })}>
-                                    Add Event
-                                </li>
-                            </Link>
-                            <Link href="/community/guidelines">
-                                <li className="border-b py-5 text-center font-medium text-lg hover:opacity-50 cursor-pointer" onClick={() => setMenuModal({ open: false })}>
-                                    See Our Guidelines
-                                </li>
-                            </Link>
-                            <li className="border-t border-gray-400 mx-4 md:mx-6 lg:mx-8 xl:mx-10 py-5 text-center font-medium text-lg hover:opacity-50 cursor-pointer"
-                                onClick={handleLogOut}
-                            >
-                                Log Out
-                            </li>
-                        </>
+                        <li className="border-t border-gray-400 mx-4 md:mx-6 lg:mx-8 xl:mx-10 py-5 text-center font-medium text-lg hover:opacity-50 cursor-pointer"
+                            onClick={handleLogOut}
+                        >
+                            Log Out
+                        </li>
                     }
                 </ul>
             }

@@ -4,7 +4,7 @@ const guidelines = () => {
     return (
         <div className="bg-white">
             <Head>
-                <title>Hey Queer Asians | Our Guidelines</title>
+                <title>Our Guidelines - Hey Queer Asians</title>
             </Head>
             <div className="max-w-5xl w-full mx-auto px-8 py-10 tracking-wide leading-relaxed flex flex-col gap-2 text-gray-900">
                 <h1 className="text-3xl md:text-4xl py-4 md:pt-6 md:pb-8 lg:pt-10 lg:pb-12 text-gray-900">Guiding principles</h1>
